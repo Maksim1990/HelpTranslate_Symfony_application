@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% include('logo_header.html.twig') %}
+
+    <div class="col-sm-12 col-xs-12 col-lg-12" style="padding: 0 0 ;">
+    {% include('sidebar.html.twig') %}
+    <!-- !PAGE CONTENT! -->
+        {% set  background_color= app.session.get('background_color') %}
+        {% if not background_color %}
+            {% set background_color = '' %}
+        {% endif %}
+    <div class="w3-main col-sm-10 col-xs-10 col-lg-10" id="main" style="background-color: {{ background_color }};">
+    {% include('template_header.html.twig') %}
+        <div style="min-height:1000px;padding-left: 20px;width:90%;">
+            {% block basis %}{% endblock %}
+        </div>
+
+    {% include('footer.html.twig') %}
+
+    </div>
+    </div>
+{% endblock %}

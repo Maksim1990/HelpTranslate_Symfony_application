@@ -1,0 +1,75 @@
+<div id="testimonial_block" style="display: none;">
+    <div class="col-sm-6 col-lg-6 w3-center ">
+        <div class="form-group">
+            <label for="selectUserProfileType">Choose user type</label>
+            <select class="form-control" id="selectUserProfileType">
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="selectUserLanguage">Choose language</label>
+            <select class="form-control" id="selectUserLanguage">
+                {% for key,value in constant('AppBundle\\Entity\\Constant::LANG_ARRAY') %}
+                    <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="selectUserType">You are:</label>
+            <select class="form-control" id="selectUserType">
+                <option value="teacher">Teacher</option>
+                <option value="student">Student</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-6 w3-center ">
+        <label for="testimonial_text">Write testimonial here:</label>
+        <textarea rows="9" id="testimonial_text" class="form-control" ></textarea>
+    </div>
+    <div class="col-sm-12 col-lg-12 w3-center " style="padding-top: 20px;">
+        <input type="submit" id="cancel_testimonial" style="width: 30%;" class="btn btn-danger" value="Cancel">
+        <input type="submit" id="send_testimonial"  style="width: 30%;" class="btn btn-success" value="Send">
+    </div>
+
+</div>
+<div class="col-sm-12 col-lg-12 ">
+    {% if user.id != app.user.id %}
+    <button id="add_testimonial" class="w3-display-right btn btn-sm btn-success">Add new testimonial</button>
+    {% endif %}
+</div>
+<table class="w3-table-all w3-card-4" id="testimonial_table">
+    <tr>
+        <th>{{ "testimonial"|trans }}</th>
+        <th>{{ user.username|capitalize }} {{ "as"|trans }}</th>
+        <th>{{ "user"|trans }}</th>
+        <th>{{ "sender_user_type"|trans }}</th>
+        <th>{{ "language"|trans }}</th>
+        <th>{{ "date"|trans }}</th>
+    </tr>
+    {% for item in testimonials %}
+    <tr>
+        <td>{{ item.description }}</td>
+        <td>{{ item.userProfileType }}</td>
+
+        <td><a href="{{ url('profile', {'id':item.user.id}) }}" >
+                {{ item.user.username }}</a></td>
+        <td>{{ item.userType }}</td>
+        {% set path = 'images/flags/' %}
+        {% set ext = '.svg' %}
+        {% if item.languageType in arrayFlags %}
+            {% set fullPath = path~item.languageType~ext %}
+            {% set style = 'style="border-radius: 100px;"' %}
+        {% else %}
+            {% set fullPath = path~'flag.png' %}
+            {% set style = '' %}
+        {% endif %}
+        {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[item.languageType] %}
+        <td>
+            <img width="30" {{ style|raw }}  src="{{ asset(fullPath) }}" data-toggle="tooltip" data-placement="right" title="{{  language}}" alt="">
+        </td>
+        <td>{{ item.createdAt| date('Y-m-d H:i:s') }}</td>
+    </tr>
+{% endfor %}
+</table>

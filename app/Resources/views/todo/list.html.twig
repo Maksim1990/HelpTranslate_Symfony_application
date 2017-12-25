@@ -1,0 +1,191 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('css/jquery.toolbar.css')}}">
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+
+    <div class="col-sm-11  col-xs-12">
+        <div class="col-sm-6  col-xs-6">
+    <h1>{{ 'all_works'|trans }}</h1>
+        </div>
+        <div class="row">
+        <div class="col-sm-6  col-xs-6" style="padding-top: 20px;">
+            <p class="btn-toolbar btn-toolbar-success options w3-center"><i class="fa fa-cog" aria-hidden="true"></i>
+            <p id="toolbar-options" class="hidden">
+                <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Unassign this teacher"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                <a href="#"  data-toggle="tooltip"   data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#"  data-placement="bottom" title="Watch teacher's profile"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+            </p>
+        </div>
+
+    <table class="table">
+
+        {% if todos is not empty %}
+        <thead>
+        <tr>
+            <th>{{ 'title'|trans }}</th>
+            <th>{{ 'author'|trans }}</th>
+            <th>{{ 'description'|trans }}</th>
+            <th>{{ 'due_date'|trans }}</th>
+            <th>{{ 'status'|trans }}</th>
+            <th>{{ 'teacher'|trans }}</th>
+            <th>{{ 'created_at'|trans }}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for todo in todos %}
+            <tr>
+                <td> <a href="{{ url('todo_detail', {'id':todo.id}) }}" >{{ todo.title }}</a></td>
+                <td>
+                    <a href="{{ url('profile', {'id':todo.userId}) }}" >{{ todo.user|capitalize }}</a>
+                </td>
+                <td>{{ todo.description|raw }}</td>
+                <td>{{ todo.dueDate  }}</td>
+                <td id="status_{{ todo.id }}">Undefined</td>
+                <td id="assign_block_{{ todo.id }}" class="w3-center">
+                    <span>Not asigned </span><br>
+                    {% if todo.userId == app.user.id %}
+                    <a href="#" id="assign_link_{{ todo.id }}" data-toggle="modal" data-target="#assignTeacher" onclick="assignWork('{{ todo.id }}')">Assign now</a>
+                    {%  endif %}
+                    <div class=" w3-center" id="assign_buttons_block_{{ todo.id }}" style="display: none;">
+                        <a id="teacher_user_link_{{ todo.id }}" class="teacher_delete"  data-work-id="{{ todo.id }}" data-toggle="tooltip" data-placement="bottom" title="Unassign this teacher"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        <a  id="reasign_teacher_{{ todo.id }}" class="reasign_teacher" onclick="assignWork('{{ todo.id }}')" data-toggle="modal" data-target="#assignTeacher" data-toggle="tooltip"   data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a href="#" id="assigned_teacher_link_{{ todo.id }}"  data-toggle="tooltip" data-placement="bottom" title="Watch teacher's profile"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                    </div>
+                </td>
+                <td>{{ 'undefined'|trans }}</td>
+            </tr>
+        {% endfor %}
+        {% else %}
+            <div class="col-sm-6 col-xm-6 notif_alert">
+                <span>{{ 'no_works_created'|trans }}!</span><br>
+                <a href="{{ url('my_studying_list') }}" class="btn btn-sm btn-success">{{ 'back_to_works'|trans }}</a>
+            </div>
+        {% endif %}
+        </tbody>
+    </table>
+        <div class="w3-center">
+            <div class="navigation">
+                {{ knp_pagination_render(todos) }}
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="assignTeacher" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ 'teachers'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{{ 'user'|trans }}</th>
+                            <th>{{ 'language'|trans }}</th>
+                            <th>{{ 'language_level'|trans }}</th>
+                            <th>{{ 'status'|trans }}</th>
+                            <th>{{ 'teacher'|trans }}</th>
+
+                        </tr>
+                        </thead>
+                    {% for teacher in teachers %}
+                        <tr>
+                            <td><a class="teacher_assign" data-user-id="{{ teacher.id }}" data-user-name="{{ teacher.name }}">{{ teacher.name|capitalize }}</a></td>
+                            <td>
+                                <img width="25" style="border-radius: 100px;"  src="{{ asset( teacher.languageIcon) }}" data-toggle="tooltip" data-placement="right" title="{{  teacher.language}}" alt="">
+                            </td>
+                            <td>{{ teacher.language_level }}</td>
+                            <td>{{ 'available'|trans }}</td>
+                            <td><button class="btn btn-sm btn-success teacher_assign" data-user-id="{{ teacher.id }}" data-user-name="{{ teacher.name }}">{{ 'assign'|trans }}</button></td>
+                        </tr>
+
+                   {% endfor %}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+     </div>
+    <input type="hidden" id="work_id">
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.toolbar.js') }}"></script>
+    <script>
+        $('.options').toolbar({
+            content: '#toolbar-options',
+            position: 'bottom',
+            style: 'success',
+            animation: 'grow', //standard, flip, grow, flyin, and bounce
+//  event: 'click'
+        });
+    </script>
+    <script>
+        $('a.reasign_teacher').click(function(e)
+        {
+            // Cancel the default action
+            e.preventDefault();
+        });
+
+        {% for flash_message in app.session.flashbag.get('notice') %}
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+             text:'{{ flash_message }}'
+            }).show();
+        {% endfor %}
+
+        function assignWork(id){
+            $('#work_id').val(id);
+        }
+
+        //Assign new teacher
+        $('.teacher_assign').click(function () {
+           var user_id= $(this).data('user-id');
+           var user_name= $(this).data('user-name');
+           var username=user_name[0].toUpperCase() + user_name.substring(1);
+           var work_id= $('#work_id').val();
+           //alert(work_id);
+            $('#assign_block_'+work_id+' span').html("{{ 'assigned'|trans }} <a href='profile/"+user_id+"'>"+ username + "</a>");
+
+            $('#status_'+work_id).html('<span class="w3-text-orange">{{ 'pending'|trans }}</span>');
+            $('#assign_link_'+work_id).hide();
+            $('#assign_buttons_block_'+work_id).show();
+            $('#assigned_teacher_link_'+work_id).attr('href', 'profile/'+user_id);
+            $('#assignTeacher').modal('hide');
+//            new Noty({
+//                type: 'success',
+//                layout: 'topRight',
+//                text: username + ' successfully assigned for this work!'
+//            }).show();
+        })
+
+
+        //Delete teacher and make current work unassigned
+        $('.teacher_delete').click(function () {
+            var work_id= $(this).data('work-id');
+            var conf=confirm('{{ 'want_to_assign_teacher'|trans }}');
+            if(conf){
+                $('#assign_block_'+work_id +' span' ).html("<span>{{ 'not_assigned'|trans }} </span>");
+                $('#status_'+work_id).html('{{ 'undefined'|trans }}');
+                $('#assign_buttons_block_'+work_id).hide();
+                $('#assign_link_'+work_id).show();
+                new Noty({
+                    type: 'success',
+                    layout: 'topRight',
+                    text:'{{ 'successfully_assigned'|trans }}!'
+                }).show();
+            }
+
+        });
+    </script>
+
+{% endblock %}

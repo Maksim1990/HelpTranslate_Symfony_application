@@ -1,0 +1,113 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+   {{ 'user_opinion'|trans }}
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
+
+        #new_opinion{
+            margin-top: 30px;
+        }
+        .hd, .rw{
+            height: 30px;
+        }
+        .main-hd, .main-rw{
+            padding-top: 15px;
+            padding-bottom: 25px;
+        }
+        .main-rw{
+            border-top:1px solid grey;
+            background-color: lightgrey;
+        }
+        .main-rw:hover{
+            background-color: white;
+        }
+        @media(max-width:1000px){
+
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <div class="row">
+
+        <div class="col-sm-9 col-xs-9">
+            <h1 class="header_text">{{ 'user_opinion'|trans }}</h1>
+        </div>
+        <div class="col-sm-3 col-xs-3">
+            <a href="{{ url('create_opinion') }}" class="btn btn-sm btn-success" id="new_opinion">{{ 'leave_opinion'|trans }}</a>
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-sm-12 col-xs-12">
+            <div class="col-sm-12 col-xs-12 main-hd w3-gray w3-center">
+            <div class="col-sm-2 col-xs-2 hd">{{ 'user'|trans }}</div>
+            <div class="col-sm-6 col-xs-6 hd">{{ 'opinion'|trans }}</div>
+            <div class="col-sm-3 col-xs-3 hd">{{ 'created_at'|trans }}</div>
+            <div class="col-sm-1 col-xs-1 hd">{{ 'actions'|trans }}</div>
+            </div>
+           {% for opinion in opinions %}
+            <div class="col-sm-12 col-xs-12 main-rw w3-center">
+              <div class="col-sm-2 col-xs-2 rw">
+                  {% if opinion.user.image is not empty %}
+                          {% set profile_image_path = '/helptranslate/images/uploads/'~opinion.user.image.ImageName %}
+                          {#{% set profile_image_path = '/images/uploads/'~opinion.user.image.ImageName %}#}
+                  {% else %}
+                          {#{% set profile_image_path = '/images/layout/profile.png' %}#}
+                          {% set profile_image_path = '/helptranslate/images/layout/profile.png' %}
+                  {% endif %}
+                  <a href="{{ url('profile', {'id':opinion.user.id}) }}">
+                  <img src="{{ asset(profile_image_path)}}" class="w3-circle w3-margin-right" style="width:46px">
+                  </a>
+                  <a href="{{ url('profile', {'id':opinion.user.id}) }}">
+                  {{ opinion.user.username }}
+                  </a>
+              </div>
+              <div class="col-sm-6 col-xs-6 rw">
+                  {% if opinion.user.id == app.user.id  %}
+                  <a href="{{ url('edit_opinion', {'id':opinion.id}) }}">
+                  {{ opinion.opinionText|raw }}
+                  </a>
+                      {% else %}
+                          {{ opinion.opinionText|raw }}
+                  {% endif %}
+              </div>
+              <div class="col-sm-3 col-xs-3 rw">
+                  {{ opinion.createdAt|date('Y-m-d H:i:s') }}
+              </div>
+                <div class="col-sm-1 col-xs-1 rw">
+                    {% if opinion.user.id == app.user.id  %}
+                    <a href="{{ url('edit_opinion', {'id':opinion.id}) }}" class="btn btn-sm btn-success">{{ 'edit'|trans }}
+                    </a>
+                    {% endif %}
+              </div>
+              </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+        {% for flash_message in app.session.flashbag.get('notice') %}
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text:'{{ flash_message }}'
+        }).show();
+        {% endfor %}
+    </script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        h2{
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    <h2 class="page-header">{{ 'welcome_to'|trans }} Instant Online Translator</h2>
+    <div class="row">
+        <div class="col-sm-12 col-lg-6">
+            <label for="input_lang">{{ 'choose_language'|trans }}</label>
+            <select class="form-control" id="input_lang">
+                {% for key,value in constant('AppBundle\\Entity\\Constant::LANG_ARRAY_GOOGLE') %}
+                    <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <textarea name="input_word" id="input_word" style="width:100%;" rows="10"></textarea>
+        </div>
+        <div class="col-sm-12 col-lg-6">
+            <label for="output_lang">{{ 'choose_result_language'|trans }}</label>
+            <select class="form-control" id="output_lang" data-toggle="tooltip" data-placement="top" title="{{ 'start_type_for_searching'|trans }}">
+                {% for key,value in constant('AppBundle\\Entity\\Constant::LANG_ARRAY_GOOGLE') %}
+                    <option value="{{ key }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <textarea name="output_word" style="width:100%;" id="output_word" rows="10"></textarea>
+        </div>
+            <div class="col-sm-6 col-lg-6">
+                <button class="btn btn-sm btn-success" id="translate">{{ 'translate'|trans }}</button>
+            </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script>
+
+        //Show add testimonial block
+        $('#translate').click(function() {
+            var input_lang=$('#input_lang').val();
+            var output_lang=$('#output_lang').val();
+            var input_word=$('#input_word').val();
+            $.ajax({
+                url:'{{ (path('translate_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "input_lang": input_lang,
+                    "output_lang": output_lang,
+                    "input_word": input_word
+                },
+                async: true,
+                success: function (data)
+                {
+            
+                    $('#output_word').val(data.output);
+
+                }
+            });
+        });
+    </script>
+{% endblock %}

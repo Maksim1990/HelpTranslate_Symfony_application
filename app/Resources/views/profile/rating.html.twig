@@ -1,0 +1,21 @@
+<table class="w3-table-all w3-card-4" id="rating_table">
+    <tr>
+        <th>{{ "user"|trans }}</th>
+        <th>{{ "rating"|trans }}</th>
+        <th>{{ "rating_date"|trans }}</th>
+    </tr>
+    {% for rating in ratings %}
+        <tr>
+
+            <td>
+                <a href="{{ url('profile', {'id':rating.user.id}) }}" >
+                    {{ rating.user.username }}
+                </a>
+
+            </td>
+            <td>{{ rating.rating }}</td>
+            <td>{{ rating.createdAt| date('Y-m-d H:i:s') }}</td>
+        </tr>
+    {% endfor %}
+</table>
+

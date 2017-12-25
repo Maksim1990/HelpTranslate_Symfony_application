@@ -1,0 +1,640 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+    {{ 'messages'|trans|capitalize }}
+{% endblock %}
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('css/easy_tabs.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
+        #tab-container {
+            border: solid 1px grey;
+            height: 800px;
+            border-radius: 20px;
+        }
+
+        #tab-container ul {
+            height: 800px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background: #ccc;
+            float: left;
+            border-right: solid 1px grey;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        #tab-container ul li {
+            width: 150px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        #tab-container ul li:first-child {
+            border-top-left-radius: 20px;
+        }
+
+        #tab-container ul li a {
+            display: block;
+            padding: 15px 0;
+            outline: none;
+        }
+
+        #tab-container ul li a:hover {
+            text-decoration: underline;
+        }
+
+        #tab-container ul li.selected-tab {
+            background: #fff;
+            position: relative;
+            left: 1px;
+            border-style: solid;
+            border-width: 1px 0;
+        }
+
+        #tab-container ul li:first-child.selected-tab {
+            border-top: none;
+        }
+
+        #tab-container ul li a.selected-tab {
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #tab-container .panel-container {
+            padding-top: 5px;
+            padding-left: 120px;
+        }
+
+        #mess_header {
+
+            padding-top: 10px;
+            padding-right: 15px;
+            min-height: 65px;
+            padding-left: 30px;
+            margin-left: 2px;
+            border-top-right-radius: 20px;
+        }
+
+        #mess_header_left, mess_header_right {
+            width: 50%;
+        }
+
+        #mess_header_left {
+            float: left;
+            padding-top: 10px;
+        }
+
+        #mess_header_right {
+            float: right;
+            text-align: right;
+        }
+
+        .chat_block, .chat_block_inner {
+            height: 800px;
+        }
+
+        .chat_content {
+            padding-left: 35px;
+            overflow: auto;
+            height: 80%;
+        }
+
+        .message_input_block {
+            height: 80px;
+            width: 100%;
+        }
+
+        .message_input_body {
+            height: 100%;
+            padding-top: 15px;
+            padding-left: 25px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .form-control {
+            width: 80%;
+            display: inline;
+        }
+
+        .w3-display-container {
+            margin-left: 150px;
+        }
+
+        .user_field {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #D6D6D6;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        .user_field:hover {
+            background-color: #EDEAEA;
+        }
+
+        .right_user_field {
+            padding-top: 15px;
+        }
+
+        .mess_body {
+            border-radius: 20px;
+            padding: 10px 10px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+
+{% endblock %}
+
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <div class="row">
+        <div class="col-sm-6 col-xs-12">
+            <h1 class="header_text">{{ 'messages_list'|trans|capitalize }}</h1>
+        </div>
+
+        <div class="col-sm-6 col-xs-12">
+            <h1><a href="#" data-toggle="modal" data-target="#findUserForMessage" title="{{ 'create_new_chat'|trans|capitalize }}"><i
+                            class="fa fa-plus-circle w3-text-grey" aria-hidden="true"></i></a></h1>
+        </div>
+
+
+        {% include('messages/modal_templates.html.twig') %}
+
+    </div>
+
+    <div id="tab-container">
+        <ul id="user_list">
+
+            {% set leftArray = [] %}
+            {% set arrayUsersAlreadyShownLeft = [] %}
+            {% for user in user.messages %}
+                {% if user.userSender.username not in leftArray %}
+
+                    {% if arrMess[user.userSender.id] is defined %}
+                        {% set mesCount = arrMess[user.userSender.id] %}
+                    {% else %}
+                        {% set mesCount = '' %}
+                    {% endif %}
+
+                    <li onclick="setUserSenderId('{{ user.userSender.id }}','{{ user.id }}')" class="link_id "><a
+                                href="#chat_{{ user.userSender.id }}_{{ user.id }}"
+                                class="user_name link_{{ user.userSender.id }}" data-name-userI="{{ user.userSender.username }}">{{ user.userSender.username }}
+                            <span class="w3-badge w3-red "
+                                  id="message_count_{{ user.userSender.id }}">{{ mesCount }}</span>
+                        </a>
+                    </li>
+                    {% set leftArray = leftArray|merge([user.userSender.username]) %}
+                    {% set arrayUsersAlreadyShownLeft = arrayUsersAlreadyShownLeft|merge([user.userSender.username]) %}
+                {% endif %}
+            {% endfor %}
+
+
+
+
+            {% set leftArray = [] %}
+            {% for user in messageWithoutReceiver %}
+                {% if user.user.username not in leftArray and  user.user.username not in arrayUsersAlreadyShownLeft %}
+
+                    {% if arrMess[user.user.id] is defined %}
+                        {% set mesCount = arrMess[user.user.id] %}
+                    {% else %}
+                        {% set mesCount = '' %}
+                    {% endif %}
+
+                    <li onclick="setUserSenderId('{{ user.user.id }}','{{ user.id }}')" class="link_id"><a
+                                href="#chat_{{ user.user.id }}_{{ user.id }}" class="user_name link_{{ user.user.id }}" data-name-userI="{{ user.user.username }}">{{ user.user.username }}
+                            <span class="w3-badge w3-red " id="message_count_{{ user.user.id }}">{{ mesCount }}</span>
+                        </a>
+                    </li>
+                    {% set leftArray = leftArray|merge([user.user.username]) %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="message_block">
+            {% set rightArray = [] %}
+            {% set arrayUsersAlreadyShownRight = [] %}
+            {% for user in user.messages %}
+                {% if user.userSender.username not in rightArray %}
+                    <div id="chat_{{ user.userSender.id }}_{{ user.id }}" class="chat_block">
+                        <div class="w3-display-container chat_block_inner">
+                            <div class="w3-white" id="mess_header">
+                                <p id="mess_header_left">{{ 'chat_with'|trans|capitalize }} <a
+                                            href="{{ url('profile', {'id':user.userSender.id}) }}">{{ user.userSender.username }}</a>
+                                </p>
+                                <p id="mess_header_right">
+                                    {% if user.userSender.image %}
+                                        {% set profile_image_path= 'images/uploads/'~user.userSender.image.imageName %}
+                                    {% else %}
+                                        {% set profile_image_path= 'images/layout/profile.png' %}
+                                    {% endif %}
+                                    <a href="{{ url('profile', {'id':user.userSender.id}) }}">
+                                        <img src="{{ asset(profile_image_path) }}" class="w3-circle w3-margin-right"
+                                             style="width:46px">
+                                    </a>
+
+                                </p>
+                            </div>
+                            {% if arrMess[user.userSender.id] is defined %}
+                                {% set mesCount = arrMess[user.userSender.id] %}
+                            {% else %}
+                                {% set mesCount = '' %}
+                            {% endif %}
+                            <div class="chat_content" id="chat_content_{{ user.userSender.id }}"
+                                 onclick="setUserSenderId('{{ user.userSender.id }}')">
+                                <h2></h2>
+
+                                {% for mes in messageList %}
+                                    {% if  (mes.userSender.username == user.userSender.username and mes.user.username ==  app.user.username) or (mes.userSender.username == app.user.username  and mes.user.username == user.userSender.username ) %}
+                                        {% if mes.userSender.image %}
+                                            {% set sender_image_path= 'images/uploads/'~mes.userSender.image.imageName %}
+                                        {% else %}
+                                            {% set sender_image_path= 'images/layout/profile.png' %}
+                                        {% endif %}
+
+                                        {% if mes.userSender.id != app.user.id %}
+                                            {% set message_style= 'float:left;background-color:white;' %}
+                                        {% else %}
+                                            {% set message_style= 'float:right; background-color:lightgray;' %}
+                                        {% endif %}
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="mess_body" style=" {{ message_style }}">
+                                                <div class="col-xs-2 col-sm-2">
+                                                    <a href="{{ url('profile', {'id':user.userSender.id}) }}">
+                                                        <img src="{{ asset(sender_image_path) }}"
+                                                             class="w3-circle w3-margin-right" style="width:36px">
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-10 col-sm-10">
+                                                    <a href="{{ url('profile', {'id':user.userSender.id}) }}">
+                                                        {{ mes.userSender.username }} </a>
+                                                    | {{ mes.createdAt| date('Y-m-d H:i:s') }}
+                                                </div>
+                                                <div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2">
+                                                    {{ mes.message }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="message_input_block w3-display-bottommiddle ">
+                                <div class="w3-white message_input_body">
+                                    <input class="form-control" type="text"
+                                           name="message_input_{{ user.userSender.id }}_{{ user.id }}"
+                                           id="message_input_{{ user.userSender.id }}_{{ user.id }}">
+                                    <buttton class="btn btn-sm btn-success sendNewMessage"
+                                             data-user-mes-id="{{ user.userSender.id }}" data-mes-id="{{ user.id }}">
+                                        {{ 'send'|trans|capitalize }}
+                                    </buttton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% set rightArray = rightArray|merge([user.userSender.username]) %}
+                    {% set arrayUsersAlreadyShownRight = arrayUsersAlreadyShownRight|merge([user.userSender.username]) %}
+                {% endif %}
+            {% endfor %}
+
+
+
+
+
+            {% set rightArray = [] %}
+            {% for user in messageWithoutReceiver %}
+                {% if user.user.username not in rightArray and user.user.username not in arrayUsersAlreadyShownRight %}
+                    <div id="chat_{{ user.user.id }}_{{ user.id }}" class="chat_block">
+                        <div class="w3-display-container chat_block_inner">
+                            <div class="w3-white" id="mess_header">
+                                <p id="mess_header_left">{{ 'chat_with'|trans|capitalize }} <a
+                                            href="{{ url('profile', {'id':user.user.id}) }}">{{ user.user.username }}</a>
+                                </p>
+                                <p id="mess_header_right">
+                                    {% if user.user.image %}
+                                        {% set profile_image_path= 'images/uploads/'~user.user.image.imageName %}
+                                    {% else %}
+                                        {% set profile_image_path= 'images/layout/profile.png' %}
+                                    {% endif %}
+                                    <a href="{{ url('profile', {'id':user.user.id}) }}">
+                                        <img src="{{ asset(profile_image_path) }}" class="w3-circle w3-margin-right"
+                                             style="width:46px">
+                                    </a>
+
+                                </p>
+                            </div>
+                            {% if arrMess[user.user.id] is defined %}
+                                {% set mesCount = arrMess[user.user.id] %}
+                            {% else %}
+                                {% set mesCount = '' %}
+                            {% endif %}
+                            <div class="chat_content" id="chat_content_{{ user.user.id }}"
+                                 onclick="setUserSenderId('{{ user.user.id }}')">
+                                <h2></h2>
+
+                                {% for mes in messageList %}
+                                    {% if  (mes.userSender.username == user.user.username and mes.user.username ==  app.user.username) or (mes.userSender.username == app.user.username  and mes.user.username == user.user.username ) %}
+                                        {% if mes.userSender.image %}
+                                            {% set sender_image_path= 'images/uploads/'~mes.userSender.image.imageName %}
+                                        {% else %}
+                                            {% set sender_image_path= 'images/layout/profile.png' %}
+                                        {% endif %}
+
+                                        {% if mes.userSender.id != app.user.id %}
+                                            {% set message_style= 'float:left;background-color:white;' %}
+                                        {% else %}
+                                            {% set message_style= 'float:right; background-color:lightgray;' %}
+                                        {% endif %}
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="mess_body" style=" {{ message_style }}">
+                                                <div class="col-xs-2 col-sm-2">
+                                                    <a href="{{ url('profile', {'id':user.userSender.id}) }}">
+                                                        <img src="{{ asset(sender_image_path) }}"
+                                                             class="w3-circle w3-margin-right" style="width:36px">
+                                                    </a>
+                                                </div>
+                                                <div class="col-xs-10 col-sm-10">
+                                                    <a href="{{ url('profile', {'id':user.userSender.id}) }}">
+                                                        {{ mes.userSender.username }} </a>
+                                                    | {{ mes.createdAt| date('Y-m-d H:i:s') }}
+                                                </div>
+                                                <div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2">
+                                                    {{ mes.message }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="message_input_block w3-display-bottommiddle ">
+                                <div class="w3-white message_input_body">
+                                    <input class="form-control" type="text"
+                                           name="message_input_{{ user.user.id }}_{{ user.id }}"
+                                           id="message_input_{{ user.user.id }}_{{ user.id }}">
+                                    <buttton class="btn btn-sm btn-success sendNewMessage"
+                                             data-user-mes-id="{{ user.user.id }}" data-mes-id="{{ user.id }}">{{ 'send'|trans|capitalize }}
+                                    </buttton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% set rightArray = rightArray|merge([user.user.username]) %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/easy_tabs.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.easytabs/3.2.0/jquery.easytabs.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tab-container').easytabs({
+                animate: true,
+                //transitionIn: 'slideDown',
+                tabActiveClass: "selected-tab",
+                panelActiveClass: "displayed",
+            }).bind('easytabs:after', function () {
+                //Some code
+            });
+        });
+    </script>
+
+    <script>
+        function setUserSenderId(id, userId) {
+            var nameUser=$('.link_'+id).data('name-useri');
+            $('#chat_'+id+'_'+userId).find('#mess_header_left').html('{{ 'chat_with'|trans|capitalize }} <a href="/{{ app.request.locale }}/profile/' + id + '">'+nameUser+'</a>')
+            var num = $('#message_count_' + id).text();
+            $('#message_count_' + id).text('');
+            $('#message_count_' + id).hide();
+            var current_new_messages = $('#current_new_messages').text();
+            if (num != '') {
+                current_new_messages = +current_new_messages - num;
+                $('#current_new_messages').text('');
+                $('#current_new_messages, #current_new_messages_side').text(current_new_messages);
+            }
+            if (current_new_messages == 0) {
+                $('#current_new_messages_side, #current_new_messages').hide();
+            }
+            $.ajax({
+                method: 'POST',
+                dataType: "json",
+                url: '{{ (path('mark_as_read_ajax')) }}',
+                data: {
+                    "id_user_message": id
+                },
+                async: true,
+                success: function (data) {
+                    // alert('Success');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#findUser').on("input", function () {
+                var search = this.value;
+                $.ajax({
+                    url: '{{ (path('find_user_ajax')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "search": search
+                    },
+                    async: true,
+                    success: function (data) {
+                        $('#userFindResult').html('');
+                        if (data.output) {
+                            for (var i = 0; i < data.output.length; i++) {
+                                var user_name = data.output[i]['username'];
+                                var user_name_for_func = "'" + data.output[i]['username'] + "'";
+                                var username = user_name[0].toUpperCase() + user_name.substring(1);
+                                $('<div class="row">').html('<div class="col-sm-10 col-sm-offset-1 user_field" data-toggle="modal" data-target="#newMessageModal" onclick="getUserToSendMessageId(' + data.output[i]['id'] + ',' + user_name_for_func + ')"><div class="col-sm-2 col-xm-12 left_user_field"><img width="50" style="border-radius:20px;" src="' + data.output[i]['image_path'] + '"> </div><div class="col-sm-10 col-xm-12 right_user_field">' + username + '</div></div></div>').appendTo('#userFindResult');
+
+                            }
+                        } else {
+                            $('<div class="row">').html('<div class="col-sm-10 col-sm-offset-1">No users found!</div></div>').appendTo('#userFindResult');
+                        }
+                    }
+                });
+            });
+        });
+
+        function getUserToSendMessageId(id, username) {
+            var username = username[0].toUpperCase() + username.substring(1);
+            $('#findUserForMessage').modal('hide');
+            $('#new_message_to').text(username);
+            $('#user_id_message_to_send').val(id);
+            $('#user_name_message_to_send').val(username);
+
+
+        }
+
+        function hideMessageModal() {
+            $('#newMessageModal').modal('hide');
+        }
+
+
+        //Send message from normal chat window
+        $('.sendNewMessage').click(function () {
+            var user_receiver_id = $(this).data('user-mes-id');
+            var mes_id = $(this).data('mes-id');
+            var message = $('#message_input_' + user_receiver_id + '_' + mes_id).val();
+
+            $.ajax({
+                url: '{{ (path('send_new_messages_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "user_receiver_id": user_receiver_id,
+                    "message": message
+                },
+                async: true,
+                success: function (data) {
+                    if (data.message) {
+                        var today = new Date();
+                        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        var dateTime = date+' '+time;
+                        $('#message_input_' + user_receiver_id + '_' + mes_id).val('');
+                        $('<div class="col-xs-12 col-sm-12">').html('<div class="mess_body" style=" border-radius: 20px;padding: 10px 10px;margin-right: 5px;margin-bottom:10px;display: block; float:right; background-color:lightgray;" ><div class="col-xs-2 col-sm-2"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"><img src="' + data.user_image + '" class="w3-circle w3-margin-right" style="width:36px"></a></div><div class="col-xs-10 col-sm-10"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"> ' + data.user_name + ' </a>| '+dateTime+'</div><div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2" >' + data.message + "</div></div></div>").appendTo('#chat_content_' + user_receiver_id);
+                    }
+                }
+            });
+        });
+
+
+        $('.link_id').click(function () {
+             $('.current_block').css('display','none');
+            $('.current_tab').removeClass('selected-tab');
+
+        });
+
+
+
+
+        //Send message from modal window
+        $('#send_new_modal_message').click(function () {
+            var user_receiver_id = $('#user_id_message_to_send').val();
+            var user_name_receiver_id = $('#user_name_message_to_send').val();
+            var message = $('#message_body_to_send').val();
+
+
+            $.ajax({
+                url: '{{ (path('send_new_messages_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "user_receiver_id": user_receiver_id,
+                    "message": message
+                },
+                async: true,
+                success: function (data) {
+                    if (data.message) {
+
+                        var cusid_ele = $('.user_name').text();
+                        var arr = cusid_ele.split(' ');
+
+                        var newArray = new Array();
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i]) {
+                                //-- Replace nontext character with ""
+                                //-- Replace nontext character with "*"
+                                //-- arr[i].replace(/\s+/g, '*').replace(/[^a-zA-Z-]/g, '').toLowerCase();
+                                var str = arr[i].replace(/\s+/g, '').replace(/[^a-zA-Z-]/g, '').toLowerCase();
+                                if (str) {
+                                    newArray.push(str);
+                                }
+                            }
+                        }
+
+
+                        var userNameLowerCase = user_name_receiver_id.toLowerCase();
+                        var strCheckResult = newArray.indexOf(userNameLowerCase);
+                        var today = new Date();
+                        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        var dateTime = date+' '+time;
+
+                        //-- Check if new user in message list
+                        if (+strCheckResult < 0) {
+                            newArray.push(userNameLowerCase);
+                            $('<li onclick="setUserSenderId(\'' + user_receiver_id + '\',\'900\')" class="current_tab selected-tab">').html('<a href="#chat_' + user_receiver_id + '_900" class="user_name selected-tab link_'+user_receiver_id+'" data-name-userI="'+user_name_receiver_id+'">' + user_name_receiver_id + '</a></li>').appendTo('#user_list')
+                            $('.chat_block').css('display', 'none');
+                            $('.link_id').removeClass('selected-tab');
+                            $('#mess_header_left').html('{{ 'chat_with'|trans|capitalize }} <a href="#">' + user_name_receiver_id + '</a>');
+                            var mess_header_left = '<p id="mess_header_left">{{ 'chat_with'|trans|capitalize }} <a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '">' + user_name_receiver_id + '</a></p>';
+                            var mess_header_right = '<p id="mess_header_right"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"><img src="/images/layout/profile.png" class="w3-circle w3-margin-right" style="width:46px"></a></p>';
+                            var message_content = '<div  class="chat_content" id="chat_content_' + user_receiver_id + '"><h2></h2></div>';
+
+                            var input_block = '<div class="message_input_block w3-display-bottommiddle "><div class="w3-white message_input_body"><input class="form-control" type="text" name="message_input_' + user_receiver_id + '_900" id="message_input_' + user_receiver_id + '_900"><button class="btn btn-sm btn-success sendNewMessage" data-user-mes-id="' + user_receiver_id + '" data-mes-id="900">{{ 'send'|trans|capitalize }}</button></div></div>';
+                            $('<div id="chat_' + user_receiver_id + '_900" class=" displayed current_block" style="position: static; visibility: visible;">').html('<div class="w3-display-container chat_block_inner"><div class="w3-white" id="mess_header">' + mess_header_left + mess_header_right + '</div>' + message_content + input_block + '</div></div>').appendTo('.message_block');
+                            $('#message_body_to_send').val('');
+                            $('#newMessageModal').modal('hide');
+                            $('#message_input_' + user_receiver_id).val('');
+                           // alert(user_receiver_id);
+                            $('<div class="col-xs-12 col-sm-12">').html('<div class="mess_body" style=" border-radius: 20px;padding: 10px 10px;margin-right: 5px;margin-bottom:10px;display: block; float:right; background-color:lightgray;" ><div class="col-xs-2 col-sm-2"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"><img src="' + data.user_image + '" class="w3-circle w3-margin-right" style="width:36px"></a></div><div class="col-xs-10 col-sm-10"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"> ' + data.user_name + ' </a>| '+dateTime+'</div><div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2" >' + data.message + "</div></div></div>").appendTo('#chat_content_' + user_receiver_id);
+
+                        } else {
+                            $('#message_body_to_send').val('');
+                            $('#newMessageModal').modal('hide');
+                            $('#message_input_' + user_receiver_id).val('');
+                            $('<div class="col-xs-12 col-sm-12">').html('<div class="mess_body" style=" border-radius: 20px;padding: 10px 10px;margin-right: 5px;margin-bottom:10px;display: block; float:right; background-color:lightgray;" ><div class="col-xs-2 col-sm-2"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"><img src="' + data.user_image + '" class="w3-circle w3-margin-right" style="width:36px"></a></div><div class="col-xs-10 col-sm-10"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"> ' + data.user_name + ' </a>| '+dateTime+'</div><div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2" >' + data.message + "</div></div></div>").appendTo('#chat_content_' + user_receiver_id);
+                        }
+
+
+                        $('.current_tab').click(function () {
+                            $('.chat_block').css('display','none');
+                            $('.link_id').removeClass('selected-tab');
+                            $('.current_block').css('position','static');
+                            $('.current_block').css('visibility','visible');
+                            $('.current_block').css('display','block');
+                            $('.current_tab').addClass('selected-tab');
+                        });
+
+
+                        //Send message from normal chat window
+                        $('.sendNewMessage').click(function () {
+                            var user_receiver_id = $(this).data('user-mes-id');
+                            var mes_id = $(this).data('mes-id');
+                            var message = $('#message_input_' + user_receiver_id + '_' + mes_id).val();
+
+                            $.ajax({
+                                url: '{{ (path('send_new_messages_ajax')) }}',
+                                type: "POST",
+                                dataType: "json",
+                                data: {
+                                    "user_receiver_id": user_receiver_id,
+                                    "message": message
+                                },
+                                async: true,
+                                success: function (data) {
+                                    if (data.message) {
+                                        $('#message_input_' + user_receiver_id + '_' + mes_id).val('');
+                                        $('<div class="col-xs-12 col-sm-12">').html('<div class="mess_body" style=" border-radius: 20px;padding: 10px 10px;margin-right: 5px;margin-bottom:10px;display: block; float:right; background-color:lightgray;" ><div class="col-xs-2 col-sm-2"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"><img src="' + data.user_image + '" class="w3-circle w3-margin-right" style="width:36px"></a></div><div class="col-xs-10 col-sm-10"><a href="/{{ app.request.locale }}/profile/' + user_receiver_id + '"> ' + data.user_name + ' </a>| 2017-11-13 11:46:41</div><div class="col-xs-10 col-xs-offset-2 col-sm-10 col-sm-offset-2" >' + data.message + "</div></div></div>").appendTo('#chat_content_' + user_receiver_id);
+                                    }
+                                }
+                            });
+                        });
+
+
+                    }
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {display:none;}
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #36D88E;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #36D88E;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <h1 class="header_text">{{ 'profile_settings'|trans }}</h1>
+
+    <div class="row">
+        <div class="col-sm-5 col-lg-5 w3-center">
+            <h4>{{ 'theme_settings'|trans }}</h4>
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <td>{{ 'background_color'|trans }}:</td>
+                    <td>
+                        <input type="color" id="colorpickerBackground" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'sidebar_color'|trans }}:</td>
+                    <td>
+                        <input type="color" id="colorpicker" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'footer_color'|trans }}:</td>
+                    <td>
+                        <input type="color" id="colorpickerFooter" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'header_color'|trans }}:</td>
+                    <td>
+                        <input type="color" id="colorpickerHeader" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-5 col-sm-offset-1 col-lg-5 col-lg-offset-1 w3-center">
+            <h4>{{ 'security_settings'|trans }}</h4>
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <td>{{ 'hide_email'|trans }}:</td>
+                    <td>
+                        <label class="switch">
+                            {% set  show_email= app.session.get('show_email') %}
+                            {% if  show_email == 'Y' %}
+                                {% set showStatus = 'checked' %}
+                                {% else %}
+                                    {% set showStatus = '' %}
+                            {% endif %}
+                            <input type="checkbox" id="show_email" {{ showStatus }}>
+                            <span class="slider round"></span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        {% set  sidebar_color= app.session.get('sidebar_color') %}
+        {% if not sidebar_color %}
+        {% set sidebar_color = '' %}
+        {% endif %}
+        {% set  background_color= app.session.get('background_color') %}
+        {% if not  background_color %}
+        {% set background_color = '' %}
+        {% endif %}
+        {% set  footer_color= app.session.get('footer_color') %}
+        {% if not  footer_color %}
+        {% set footer_color = '' %}
+        {% endif %}
+        {% set  header_color= app.session.get('header_color') %}
+        {% if not  header_color %}
+        {% set header_color = '' %}
+        {% endif %}
+        document.querySelector('input[id="colorpicker"]').value = '{{ sidebar_color }}';
+        document.querySelector('input[id="colorpickerBackground"]').value = '{{ background_color }}';
+        document.querySelector('input[id="colorpickerFooter"]').value = '{{ footer_color }}';
+        document.querySelector('input[id="colorpickerHeader"]').value = '{{ header_color }}';
+
+
+        $("#colorpicker").on("change",function(){
+            var sidebar_color=$("#colorpicker").val();
+            $(".myclass").css("color",sidebar_color);
+            $('#mySidebar').css('backgroundColor',sidebar_color);
+            $.ajax({
+                url:'{{ (path('change_sidebar_color_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "sidebar_color": sidebar_color
+                },
+                async: true,
+                success: function (data)
+                {
+                    new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        text:'{{ 'sidebar_color_changed'|trans }}'
+                    }).show();
+                }
+            });
+        });
+        $("#colorpickerBackground").on("change",function(){
+            var background_color=$("#colorpickerBackground").val();
+            $(".myclass").css("color",background_color);
+            $('#main').css('backgroundColor',background_color);
+            $.ajax({
+                url:'{{ (path('change_background_color_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "background_color": background_color
+                },
+                async: true,
+                success: function (data)
+                {
+                    new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        text:'{{ 'background_color_changed'|trans }}'
+                    }).show();
+                }
+            });
+        });
+
+        $("#colorpickerFooter").on("change",function(){
+            var footer_color=$("#colorpickerFooter").val();
+            $(".myclass").css("color",footer_color);
+            $('footer').css('backgroundColor',footer_color);
+            $.ajax({
+                url:'{{ (path('change_footer_color_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "footer_color": footer_color
+                },
+                async: true,
+                success: function (data)
+                {
+                    new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        text:'{{ 'footer_color_changed'|trans }}'
+                    }).show();
+                }
+            });
+        });
+
+
+        $("#colorpickerHeader").on("change",function(){
+            var header_color=$("#colorpickerHeader").val();
+            $(".myclass").css("color",header_color);
+            $('#header_main').css('backgroundColor',header_color);
+            $.ajax({
+                url:'{{ (path('change_header_color_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "header_color": header_color
+                },
+                async: true,
+                success: function (data)
+                {
+                    new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        text:'{{ 'header_color_changed'|trans }}'
+                    }).show();
+                }
+            });
+        });
+        $("#show_email").on("click",function(){
+            var status=$('#show_email').is(':checked');
+            if(status){
+                var strStatus = 'Y';
+            }else{
+                var strStatus = 'N';
+            }
+            $.ajax({
+                url:'{{ (path('show_email_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "strStatus": strStatus
+                },
+                async: true,
+                success: function (data)
+                {
+                    if(data.output){
+                        if(data.output == 'Y'){
+                            var strNotification = '{{ 'activated'|trans }}';
+                            var typeNotification = 'success';
+                        }else{
+                            var strNotification = '{{ 'deactivated'|trans }}';
+                            var typeNotification = 'error';
+                        }
+                        new Noty({
+                            type: typeNotification,
+                            layout: 'topRight',
+                            text:'{{ 'showing_emails_is'|trans }} '+strNotification
+                        }).show();
+                    }
+
+                }
+            });
+
+
+        });
+
+
+
+    </script>
+{% endblock %}

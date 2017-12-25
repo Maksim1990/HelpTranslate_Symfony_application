@@ -1,0 +1,163 @@
+<!-- Footer -->
+{% set  footer_color= app.session.get('footer_color') %}
+        {% if not footer_color %}
+            {% set footer_color = '' %}
+        {% endif %}
+<footer style="background-color:{{ footer_color }};">
+ <div class="row">
+     <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 w3-center " style="color:white;">
+         <div class="col-sm-4  col-xs-12 footer_col">
+             <div class="w3-row-item w3-col s7 m7 l7 w3-border-bottom w3-border-white borderT1"></div>
+             <div class="w3-row-item w3-col s5 m5 l5 w3-white borderT1 shapeT"></div>
+             <ul>
+                <li><a href="{{ url('about') }}">{{ 'about'|trans }}</a></li>
+                <li><a href="{{ url('languages') }}">{{ 'languages'|trans }}</a></li>
+                <li><a href="{{ url('teachers', {'lang':'all'}) }}">{{ 'teachers'|trans }}</a></li>
+                <li><a href="{{ url('students', {'lang':'all'}) }}">{{ 'students'|trans }}</a></li>
+            </ul>
+         </div>
+         <div class="col-sm-4  col-xs-12 footer_col">
+             <div class="w3-row-item w3-col s7 m7 l7 w3-border-bottom w3-border-white borderT1"></div>
+             <div class="w3-row-item w3-col s5 m5 l5 w3-white borderT1 shapeT"></div>
+             <ul>
+                 <li><a href="{{ url('contact') }}">{{ 'contacts'|trans }}</a></li>
+                 <li><a href="{{ url('translate', {'id':app.user.id}) }}">{{ 'instant_translator'|trans }}</a></li>
+                 <li><a href="{{ url('messages_list', {'id':app.user.id}) }}">{{ 'messages'|trans }}</a></li>
+                 <li><a href="{{ url('opinions') }}">{{ 'leave_opinion'|trans }}</a></li>
+             </ul>
+         </div>
+         <div class="col-sm-4  col-xs-12 footer_col">
+             <div class="w3-row-item w3-col s7 m7 l7 w3-border-bottom w3-border-white borderT1"></div>
+             <div class="w3-row-item w3-col s5 m5 l5 w3-white borderT1 shapeT"></div>
+             <ul>
+                 <li><a href="{{ url('profile', {'id':app.user.id}) }}">{{ 'my_profile'|trans }}</a></li>
+                 <li><a href="{{ url('profile_settings', {'id':app.user.id}) }}">{{ 'settings'|trans }}</a></li>
+                 <li><a href="{{ url('update_profile', {'id':app.user.id}) }}">{{ 'edit_profile'|trans|capitalize }}</a></li>
+                 <li><a href="{{ url('logout') }}">{{ 'logout'|trans }}</a></li>
+             </ul>
+         </div>
+         <div class="col-sm-12  col-xs-12">
+             2017 &#169; {{ 'developed_by'|trans }} <a href="{{ url('profile', {'id':'4'}) }}">{{ 'maksim_narushevich'|trans }}</a>
+         </div>
+     </div>
+ </div>
+</footer>
+
+<!-- End page content -->
+</div>
+</div>
+</div></div>
+
+<script>
+    //Check current notifications
+    $(document).ready(function () {
+        $.ajax({
+            cache: false,
+            method:'POST',
+            dataType: "json",
+            url:'{{ (path('notification_ajax')) }}',
+            data:{},
+            success: function(data) {
+                if(data.messages){
+                    if(data.messages !=''){
+                        $('#current_new_messages, #current_new_messages_side').animate({opacity:0},function(){
+                            $(this).text(data.messages)
+                                .animate({opacity:1});
+                        });
+                    }else{
+                        $('#current_new_messages').animate({opacity:0},function(){
+                            $(this).text(data.messages)
+                                .animate({opacity:1});
+                        });
+                    }
+                }
+                if( data.pendingWorks){
+                    $('#current_pending_works').animate({opacity:0},function(){
+                        $(this).text(data.pendingWorks)
+                            .animate({opacity:1});
+                    });
+                }
+            }
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        if ($(window).width() < 1100) {
+            $('#button_menu_hide').css('display','none');
+            $('#button_menu_show').css('display','block');
+            $('#mySidebar').css('width','0%');
+            main.style.width = "100%";
+            $('#main').css('marginLeft','0%');
+            $('#main').css('paddingLeft','0%');
+            $('#main').css('paddingRight','0%');
+
+            w3_close();
+        }
+        else {
+            w3_open();
+            $('footer').css('paddingRight','15px');
+        }
+    });
+
+    $(window).resize(function () {
+        if ($(window).width() < 1100) {
+            $('#button_menu_hide').css('display','none');
+            $('#button_menu_show').css('display','block');
+            $('#mySidebar').css('width','0%');
+            $('#main').css('marginLeft','0%');
+            $('#main').css('paddingLeft','0%');
+            $('#main').css('paddingRight','0%');
+            main.style.width = "100%";
+            w3_close();
+        }
+        else {
+            $('#main').css('marginLeft','20%');
+            $('#mySidebar').css('width','20%');
+            w3_open();
+            $('#main').css('paddingRight','15px');
+        }
+    });
+    // Get the Sidebar
+    var mainSidebar = document.getElementById("mainSidebar");
+
+    // Get the DIV with overlay effect
+    var main = document.getElementById("main");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+
+        mainSidebar.style.display = 'block';
+        main.style.width = "84%";
+
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mainSidebar.style.display = "none";
+
+        main.style.width = "100%";
+    }
+
+    //Show add testimonial block
+    $('#button_menu_show').click(function() {
+        $(this).hide();
+        main.style.width = "100%";
+        $('#mySidebar').css('width','300px');
+        $('#button_menu_hide').css('display','block');
+    });
+
+    //Show add testimonial block
+    $('#button_menu_hide').click(function() {
+        $(this).hide();
+        $('#button_menu_show').css('display','block');
+    });
+
+
+
+
+
+
+
+</script>

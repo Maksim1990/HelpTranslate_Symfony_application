@@ -1,0 +1,19 @@
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /admin
+translate:
+    resource: "@TranslateBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+home_login:
+    path: /(en|fr|th|ru)/
+    defaults: { _controller: AppBundle:ToDo:index, _locale: th|fr|en}
+
+
+
+

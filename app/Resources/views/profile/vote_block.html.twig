@@ -1,0 +1,78 @@
+<div class="w3-center">
+    <p class="w3-center" style="margin: auto;" id="circle" data-toggle="modal"
+       data-target="#rateModal"> {{ myRating }}</p>
+</div>
+<!-- Modal -->
+<div id="rateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ 'all_voted_users'|trans }}</h4>
+            </div>
+            {% if ratings is not empty %}
+                {% for rating in ratings %}
+                <div class="modal-body col-sm-12 col-xs-12 rating_line">
+                    {% if rating.user.image is not empty %}
+                        {% set profile_image_path = '/images/uploads/'~rating.user.image.ImageName %}
+                        {#{% set profile_image_path = '/helptranslate/images/uploads/'~rating.user.image.ImageName %}#}
+                    {% else %}
+                        {% set profile_image_path = '/images/layout/profile.png' %}
+                        {#{% set profile_image_path = '/helptranslate/images/layout/profile.png' %}#}
+                    {% endif %}
+
+                    <div class="col-sm-3 col-xs-3">
+                        <a href="{{ url('profile', {'id':rating.user.id}) }}" data-toggle="tooltip"
+                           data-placement="right" title="{{ rating.user.username }}">
+                            <img src="{{ asset(profile_image_path) }}" style="height: 43px;border-radius: 20px;">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-xs-4">
+                        <select class="ratingVote_{{ rating.id }}" name="rating">
+                            <option class="vote" value="1">1</option>
+                            <option class="vote" value="2">2</option>
+                            <option class="vote" value="3">3</option>
+                            <option class="vote" value="4">4</option>
+                            <option class="vote" value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5 col-xs-5">{{ rating.createdAt|date('Y-m-d H:i:s') }}</div>
+                </div>
+                <script>
+                    $('.ratingVote_{{ rating.id }}').barrating('show', {
+                        theme: 'bootstrap-stars',
+                    });
+                    $('.ratingVote_{{ rating.id }}').barrating('set',{{ rating.rating }});
+                </script>
+
+                {% endfor %}
+            {% else %}
+                <p>{{ 'no_ratings'|trans }}</p>
+            {% endif %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'close'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% if alreadyVote == 'true' %}
+    <p id="rate_name">{{ "rate"|trans }} {{ user.username| capitalize }} </p>
+    <div id="rate-block">
+        <p class="w3-hover-text-green"><i class="fa fa-thumbs-o-up" id="rate_user_now" style="font-size:36px;"></i></p>
+        <div id="rating_main" style="display:none;">
+            <select id="ratingSelect" name="rating">
+                <option class="vote" value="1">1</option>
+                <option class="vote" value="2">2</option>
+                <option class="vote" value="3">3</option>
+                <option class="vote" value="4">4</option>
+                <option class="vote" value="5">5</option>
+            </select>
+        </div>
+    </div>
+{% elseif alreadyVote =='noVote' %}
+    <p>{{ "cant_vote_your_profile"|trans }}</p>
+{% else %}
+    <p>{{ "have_already_voted"|trans }}</p>
+{% endif %}
+

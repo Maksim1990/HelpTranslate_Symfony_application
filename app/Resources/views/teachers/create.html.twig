@@ -1,0 +1,8 @@
+{% extends 'basis.html.twig' %}
+
+{% block basis %}
+    <h2 class="page-header">{{ 'register_as_teacher'|trans }}</h2>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

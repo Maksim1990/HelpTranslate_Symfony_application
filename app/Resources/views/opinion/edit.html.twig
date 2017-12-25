@@ -1,0 +1,29 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+    {{ 'edit_opinion'|trans }}
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            margin-left: 10px;
+        }
+        input{
+            height: 150px;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    <h2 class="page-header header_text">{{ 'edit_opinion'|trans }}</h2>
+    <div class="row">
+        <div class="col-sm-10 col-xs-10">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

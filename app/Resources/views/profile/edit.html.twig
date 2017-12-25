@@ -1,0 +1,32 @@
+{% extends 'basis.html.twig' %}
+
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <h1>Update profile image</h1>
+    {#{{ val }}#}
+    {#<br>#}
+    {#{{ test }}#}
+    {#<br>#}
+    {#{{ test2 }}#}
+    {#{% set  filter= app.session.get('user') %}#}
+    {#{% if filter %}#}
+
+    {#{% set name = filter['name'] %}#}
+
+     {#{% else %}#}
+        {#<h2>No image at all!!!</h2>#}
+     {#{% endif %}#}
+
+
+    {{ check }}<br>
+    {{ test }}<br>
+
+    {% for k in keys %}
+        {{ k }}<br>
+        {% endfor %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+
+{% endblock %}

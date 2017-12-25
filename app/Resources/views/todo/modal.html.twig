@@ -1,0 +1,40 @@
+
+<!-- Modal -->
+<div id="acceptModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ 'accept_work'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <textarea name="teacher_accept_description" id="teacher_accept_description" style="width:100%;" rows="6" placeholder="{{ 'leave_your_comment'|trans }} ..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="accept_work" class="btn btn-success" data-dismiss="modal">{{ 'accept'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="declineModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ 'decline_work'|trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <textarea name="teacher_decline_description" id="teacher_decline_description" style="width:100%;" rows="6" placeholder="{{ 'leave_your_comment'|trans }} ..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="decline_work" class="btn btn-danger" data-dismiss="modal">{{ 'decline'|trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>

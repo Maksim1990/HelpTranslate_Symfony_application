@@ -1,0 +1,316 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('css/jquery.toolbar.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/tippy/prism.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/tippy/app.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/tippy/tippy.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+
+        .sts a{
+            text-decoration: none;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <div class="col-sm-11  col-xs-12">
+        <div class="col-sm-9  col-xs-9">
+            <h1 class="header_text">{{ 'my'|trans }} {{ status }} {{ 'works'|trans }}</h1>
+        </div>
+        <div class="col-sm-3  col-xs-3" style="padding-top: 20px;">
+            <p class="btn-toolbar btn-toolbar-success options w3-center"><i class="fa fa-cog" aria-hidden="true"></i>
+
+            <p id="toolbar-options" class="hidden">
+                <a data-other-works="true" data-toggle="tooltip" data-placement="bottom" title="{{ 'all_works_from_other_users'|trans }}"><i class="fa fa-tasks" aria-hidden="true"></i></a>
+                <a data-create-new-work="true"   data-toggle="tooltip" data-placement="bottom" title="{{ 'create_new_work'|trans }}"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+                <a href="#"  data-toggle="tooltip" data-placement="bottom" title="{{ 'edit'|trans }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a href="#"  data-toggle="tooltip" data-placement="bottom" title="{{ 'watch_teacher_profile'|trans }}"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+
+            </p>
+        </div>
+
+        <table class="table">
+
+        {% if todos is not empty %}
+            <thead>
+            <tr>
+                <th>{{ 'title'|trans }}</th>
+                <th>{{ 'language'|trans }}</th>
+                <th>{{ 'description'|trans }}</th>
+                <th>{{ 'due_date'|trans }}</th>
+                <th>{{ 'status'|trans }}</th>
+                <th>{{ 'teacher'|trans }}</th>
+                <th>{{ 'created_at'|trans }}</th>
+                <th>{{ 'actions'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for todo in todos %}
+                <tr>
+                    <td> <a class="work_description" href="{{ url('todo_detail', {'id':todo.id}) }}" title="<h5>Description</h5><br>{{ todo.description|slice(0, 800) }} <span style='margin-left:20px;font-size: 10px;'>[See more]</span>">{{ todo.title }}</a></td>
+                    {% set path = 'images/flags/' %}
+                    {% set ext = '.svg' %}
+                    {% if todo.language_type in arrayFlags %}
+                        {% set fullPath = path~todo.language_type~ext %}
+                        {% set style = 'style="border-radius: 100px;"' %}
+                    {% else %}
+                        {% set fullPath = path~'flag.png' %}
+                        {% set style = '' %}
+                    {% endif %}
+                    {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[todo.language_type] %}
+                    <td>
+                        <img width="30" {{ style|raw }}  src="{{ asset(fullPath) }}" data-toggle="tooltip" data-placement="right" title="{{  language}}" alt="">
+                    </td>
+                    <td>{{ todo.description|striptags|slice(0, 100)|raw }}
+                        <a class="work_description" href="{{ url('todo_detail', {'id':todo.id}) }}" >
+                            <span style="margin-left:5px;font-size: 10px;">[See more]</span>
+                        </a>
+                    </td>
+
+                    <td>{{ todo.dueDate  }}</td>
+
+                    {% if todo.teacher_status is defined %}
+                        {% set status_item = todo.teacher_status %}
+                               {% if todo.teacher_status|lower == 'pending' %}
+                                    {% set class_status = 'w3-text-orange' %}
+                               {%  elseif todo.teacher_status|lower == 'accepted' %}
+                                   {% set class_status = 'w3-text-green' %}
+                               {%  elseif todo.teacher_status|lower == 'declined' %}
+                                   {% set class_status = 'w3-text-red' %}
+                               {%  endif %}
+                        {% set link_status = todo.teacher_status|lower %}
+                    {% else %}
+                        {% set status_item = "Undefined"  %}
+                        {% set class_status = '' %}
+                        {% set link_status = 'draft' %}
+                    {% endif %}
+                    <td id="status_{{ todo.id }}" class="sts"><a  href="{{ url('my_studying_list', {'status':link_status}) }}"><span class="{{ class_status }}">{{ status_item }}</span></a></td>
+                    <td id="assign_block_{{ todo.id }}" class="w3-center">
+
+                        {% if todo.teacher_id is not defined %}
+                                <span>Not asigned </span><br>
+                                {% if todo.userId == app.user.id %}
+                                    <a href="#" id="assign_link_{{ todo.id }}" data-toggle="modal" data-target="#assignTeacher" onclick="assignWork('{{ todo.id }}')">Assign now</a>
+                                {%  endif %}
+                            {%  else %}
+                                <span>Assigned to</span><br>
+                                <a id="assign_link_name_{{ todo.id }}" href="{{ url('profile', {'id':todo.teacher_id}) }}">{{ todo.teacher_name|capitalize }}</a>
+                                <a href="#" id="assign_link_{{ todo.id }}" data-toggle="modal" data-target="#assignTeacher" onclick="assignWork('{{ todo.id }}')" style="display: none;">Assign now</a>
+                                <div class=" w3-center" id="assign_buttons_block_{{ todo.id }}" >
+                                    <a id="teacher_user_link_{{ todo.id }}" class="teacher_delete"  data-work-id="{{ todo.id }}" data-toggle="tooltip" data-placement="bottom" title="Unassign this teacher"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                    <a  id="reasign_teacher_{{ todo.id }}" class="reasign_teacher" onclick="assignWork('{{ todo.id }}')" data-toggle="modal" data-target="#assignTeacher"  data-placement="bottom" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a href="{{ url('profile', {'id':todo.teacher_id}) }}" id="assigned_teacher_link_{{ todo.id }}"  data-toggle="tooltip" data-placement="bottom" title="Watch {{ todo.teacher_name|capitalize }}'s profile"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                                </div>
+                        {%  endif %}
+
+                        <div class=" w3-center" id="assign_buttons_block_{{ todo.id }}" style="display: none;">
+                            <a id="teacher_user_link_{{ todo.id }}" class="teacher_delete"  data-work-id="{{ todo.id }}" data-toggle="tooltip" data-placement="bottom" title="Unassign this teacher"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a  id="reasign_teacher_{{ todo.id }}" class="reasign_teacher" onclick="assignWork('{{ todo.id }}')" data-toggle="modal" data-target="#assignTeacher" data-toggle="tooltip"   data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            <a href="#" id="assigned_teacher_link_{{ todo.id }}"  data-toggle="tooltip" data-placement="bottom" title="Watch teacher's profile"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
+                        </div>
+                    </td>
+                    <td>{{ todo.createdDate  }}</td>
+                    <td>
+                        {% if todo.userId == app.user.id %}
+                            <a href="{{ url('todo_edit', {'id':todo.id}) }}" class="btn btn-sm btn-success">Edit</a><br>
+                            <a href="{{ url('todo_delete', {'id':todo.id}) }}" class="btn btn-sm btn-danger">Delete</a>
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            {% else %}
+                <div class="col-sm-6 col-xm-6 notif_alert">
+                    <span>{{ 'no_works_created'|trans }}!</span><br>
+                    <a href="{{ url('todo_create') }}" class="btn btn-sm btn-warning">{{ 'create_new_work'|trans }}</a>
+                </div>
+            {% endif %}
+            </tbody>
+        </table>
+        <div class="w3-center">
+            <div class="navigation">
+                {{ knp_pagination_render(todos) }}
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="assignTeacher" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{ 'assign_teacher_for_work'|trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        {%  if teachers is not empty %}
+                            <thead>
+                            <tr>
+                                <th>{{ 'user'|trans }}</th>
+                                <th>{{ 'language'|trans }}</th>
+                                <th>{{ 'language_level'|trans }}</th>
+                                <th>{{ 'status'|trans }}</th>
+                                <th>{{ 'teacher'|trans }}</th>
+
+                            </tr>
+                            </thead>
+                        {% for teacher in teachers %}
+                            <tr>
+                                <td><a class="teacher_assign" data-user-id="{{ teacher.id }}" data-user-name="{{ teacher.name }}">{{ teacher.name|capitalize }}</a></td>
+                                <td>
+                                    <img width="25" style="border-radius: 100px;"  src="{{ asset( teacher.languageIcon) }}" data-toggle="tooltip" data-placement="right" title="{{  teacher.language}}" alt="">
+                                </td>
+                                <td>{{ teacher.language_level }}</td>
+                                <td>{{ 'available'|trans }}</td>
+                                <td><button class="btn btn-sm btn-success teacher_assign" data-user-id="{{ teacher.id }}" data-user-name="{{ teacher.name }}">Assign</button></td>
+                            </tr>
+
+                        {% endfor %}
+                        {%  else %}
+                            <div class="col-sm-10 col-xm-10 notif_alert" style="margin-top: 5px;border-bottom:2px solid lightgray;">
+                                <span >{{ 'sorry_no_teachers'|trans }}.<br> {{ 'please_try_later'|trans }}!</span><br>
+                            </div>
+                            <div class="col-sm-12 col-xm-12 w3-center" style="padding-top: 30px;">
+                                <img width="200" src="{{ asset('images/layout/oops.png') }}">
+                            </div>
+
+                        {%  endif %}
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'close'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="work_id">
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('js/tippy/focus-ring.js') }}"></script>
+    <script src="{{ asset('js/tippy/prism.js') }}"></script>
+    <script src="{{ asset('js/tippy/tippy.js') }}"></script>
+    <script src="{{ asset('js/jquery.toolbar.js') }}"></script>
+{#Activate Tippy.js tooltips#}
+    <script>
+        tippy('.work_description',{
+            position: 'right',
+            animation: 'scale',
+            duration: 1000,
+            arrow: true
+        });
+    </script>
+
+
+    <script>
+        $('.options').toolbar({
+            content: '#toolbar-options',
+            position: 'bottom',
+            style: 'success',
+            animation: 'grow', //standard, flip, grow, flyin, and bounce
+//  event: 'click'
+        });
+    </script>
+    <script>
+
+        {% for flash_message in app.session.flashbag.get('notice') %}
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text:'{{ flash_message }}'
+        }).show();
+        {% endfor %}
+
+        function assignWork(id){
+            $('#work_id').val(id);
+        }
+
+        //Assign new teacher
+        $('.teacher_assign').click(function () {
+            var user_id= $(this).data('user-id');
+            var user_name= $(this).data('user-name');
+            var username=user_name[0].toUpperCase() + user_name.substring(1);
+            var work_id= $('#work_id').val();
+            $.ajax({
+                url:'{{ (path('assign_user_to_task_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "user_reviewer_id": user_id,
+                    "work_id": work_id
+                },
+                async: true,
+                success: function (data)
+                {
+                    if(data.output=='true'){
+                            $('#assign_block_'+work_id+' span').html("Assigned to <br> <a href='profile/"+user_id+"'>"+ username + "</a>");
+                            $('#status_'+work_id).html('<a  href="/{{ app.request.getLocale() }}/my_studying/pending"><span class="w3-text-orange">{{ 'pending'|trans }}</span></a>');
+                            $('#assign_link_'+work_id).hide();
+                            $('#assign_link_name_'+work_id).hide();
+                            $('#assign_buttons_block_'+work_id).show();
+                            $('#assigned_teacher_link_'+work_id).attr('href', 'profile/'+user_id);
+                            $('#assignTeacher').modal('hide');
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text: username + ' {{ 'successfully_assigned_to_work'|trans }}!'
+                            }).show();
+                    }
+                }
+            });
+        })
+
+
+        //Delete teacher and make current work unassigned
+        $('.teacher_delete').click(function () {
+            var work_id= $(this).data('work-id');
+            var conf=confirm('Do you really want to unassign this teacher?');
+            if(conf){
+                $.ajax({
+                    url:'{{ (path('unassign_teacher_ajax')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "work_id": work_id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        if(data.output=='true'){
+                            $('#assign_block_'+work_id +' span' ).html("<span>{{ 'not_assigned'|trans }} </span>");
+                            $('#status_'+work_id).html('<a  href="/{{ app.request.getLocale() }}/my_studying/draft"><span >{{ 'undefined'|trans }}</span></a>');
+                            $('#assign_buttons_block_'+work_id).hide();
+                            $('#assign_link_name_'+work_id).hide();
+                            $('#assign_link_'+work_id).show();
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text:'{{ 'successfully_unassigned'|trans }}!'
+                            }).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        $('.tool-item').click(function () {
+            var other_works=$(this).attr('data-other-works');
+            var new_work=$(this).attr('data-create-new-work');
+            if(other_works=='true'){
+                window.location.href='/{{ app.request.locale }}/list';
+            }else if(new_work=='true'){
+                window.location.href='/{{ app.request.locale }}/todo/create';
+            }
+        });
+    </script>
+
+{% endblock %}

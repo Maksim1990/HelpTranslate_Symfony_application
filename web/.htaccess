@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+ php_value memory_limit 32M
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ app_dev.php [QSA,L]
+</IfModule>

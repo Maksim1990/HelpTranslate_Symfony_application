@@ -1,0 +1,11 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+    Message box
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <h1>Messages received</h1>
+    {% for mes in user.messages %}
+        {{ mes.message }} ------- [ {{ mes.userSender.username }} ]<br>
+    {%  endfor %}
+{% endblock %}

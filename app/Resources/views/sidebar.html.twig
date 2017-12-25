@@ -1,0 +1,188 @@
+
+    <!-- Sidebar/menu -->
+
+    <div class="col-sm-2 col-xs-2 col-lg-2" style="padding: 0 0 ;" id="mainSidebar" >
+        {% set  sidebar_color= app.session.get('sidebar_color') %}
+        {% if not sidebar_color %}
+            {% set sidebar_color = '' %}
+        {% endif %}
+    <nav class="w3-sidebar w3-collapse w3-animate-left "  style="background-color:{{ sidebar_color }};" id="mySidebar"><br>
+        <div class="w3-container w3-row">
+            <div class="w3-col s3">
+                {% set  filter= app.session.get('user') %}
+                {% if filter %}
+                {% set profile_image_path = filter['profile_image_path'] %}
+                    <a href="{{ url('profile', {'id':app.user.id}) }}">
+                        <img src="{{ asset(profile_image_path)}}" class="w3-circle w3-margin-right" style="width:46px">
+                    </a>
+                {% endif %}
+            </div>
+            <div class="w3-col s9 w3-bar">
+
+                <span>{{ 'welcome'|trans }}, <strong>{{ app.user.username|capitalize  }}</strong>!</span><br>
+
+                <a href="{{ url('messages_list', {'id':app.user.id}) }}" class="w3-bar-item w3-button" data-toggle="tooltip" data-placement="bottom" title="{{ 'messages'|trans }}"><i class="fa fa-envelope" ></i>
+                    <span class="w3-badge w3-red" id="current_new_messages"></span>
+                </a>
+
+                <a href="{{ url('profile', {'id':app.user.id}) }}" class="w3-bar-item w3-button" data-toggle="tooltip" data-placement="bottom" title="{{ 'my_profile'|trans }}"><i class="fa fa-user"></i></a>
+                <a href="{{ url('profile_settings', {'id':app.user.id}) }}" class="w3-bar-item w3-button" data-toggle="tooltip" data-placement="bottom" title="{{ 'settings'|trans }}"><i class="fa fa-cog"></i></a>
+            </div>
+        </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        <i class="fa fa-users"></i> {{ 'my_profile'|trans }}<span class="fa arrow"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                <div class="panel-body">
+                    <ul class="nav nav-second-level">
+                        <li><a href="{{ url('profile', {'id':app.user.id}) }}">{{ 'view_profile'|trans|capitalize }}</a></li>
+                        <li><a href="{{ url('messages_list', {'id':app.user.id}) }}">{{ 'messages'|trans }}
+                                <span class="w3-badge w3-red" id="current_new_messages_side"></span>
+                            </a></li>
+                        <li><a href="{{ url('update_profile', {'id':app.user.id}) }}">{{ 'edit_profile'|trans|capitalize }}</a></li>
+                        <li><a href="{{ url('profile_settings', {'id':app.user.id}) }}">{{ 'settings'|trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top: -15px;">
+            <div class="panel-heading" role="tab" id="headingFour" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" >
+                        <i class="fa fa-list"></i> {{ 'my_teaching_works'|trans }}<span class="fa arrow"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="panel-body">
+                    <ul class="nav nav-second-level">
+                        <li><a href="{{ url('list_teaching') }}">All works</a></li>
+                        <li><a href="{{ url('list_teaching', {'status':'pending'}) }}">{{ 'pending'|trans }}
+                                <span class="w3-badge w3-orange w3-text-white" id="current_pending_works"></span>
+                            </a></li>
+                        <li><a href="{{ url('list_teaching', {'status':'accepted'}) }}">{{ 'completed'|trans }}</a></li>
+                        <li><a href="{{ url('list_teaching', {'status':'declined'}) }}">{{ 'declined'|trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top: -15px;">
+            <div class="panel-heading" role="tab" id="headingSix" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" >
+                        <i class="fa fa-list"></i> {{ 'my_studying_works'|trans }}<span class="fa arrow"></span>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                <div class="panel-body">
+                    <ul class="nav nav-second-level">
+                        <li><a href="{{ url('my_studying_list') }}">{{ 'all_works'|trans }}</a></li>
+                        <li><a href="{{ url('my_studying_list', {'status':'accepted'}) }}">{{ 'accepted'|trans }}</a></li>
+                        <li><a href="{{ url('my_studying_list', {'status':'pending'}) }}">{{ 'pending'|trans }}</a></li>
+                        <li><a href="{{ url('my_studying_list', {'status':'declined'}) }}">{{ 'declined'|trans }}</a></li>
+                        <li><a href="{{ url('my_studying_list', {'status':'draft'}) }}">{{ 'draft'|trans }}</a></li>
+                        <li><a href="{{ url('todo_create') }}">{{ 'create_new'|trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top: -15px;">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="{{ url('translate', {'id':app.user.id}) }}">
+                        <i class="fa fa-users"></i> {{ 'instant_translator'|trans }}<span class="fa arrow"></span>
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="w3-container">
+            <div class="w3-center w3-padding-16">{{ 'teach_and_study'|trans }}</div>
+        </div>
+        <div class="w3-bar-block">
+            <div class="sidebar-nav">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    <i class="fa fa-users"></i> {{ 'students'|trans }}<span class="fa arrow"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <ul class="nav nav-second-level">
+                                    <li><a href="{{ url('students', {'lang':'all'}) }}">{{ 'all_students'|trans }}</a></li>
+                                    <li><a href="{{ url('create_student') }}">{{ 'become_student'|trans }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fa fa-users"></i> {{ 'teachers'|trans }}<span class="fa arrow"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+                                <ul class="nav nav-second-level">
+                                    <li><a href="{{ url('teachers', {'lang':'all'}) }}">{{ 'all_teachers'|trans }}</a></li>
+                                    <li><a href="{{ url('create_teacher') }}">{{ 'become_teacher'|trans }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-center w3-padding-16">{{ 'available_languages'|trans }}</div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <h4 class="panel-title">
+                                <a class="collapsed" role="button" >
+                                    <i class="fa fa-list"></i> {{ 'languages'|trans }}<span class="fa arrow"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+                                <ul class="nav nav-second-level">
+                                    <li><a href="{{ url('languages') }}">{{ 'all_languages'|trans }}</a></li>
+                                    <li><a href="#">{{ 'find'|trans }}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="margin-top: -15px;">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="{{ url('about') }}">
+                                <i class="fa fa-users"></i> {{ 'about'|trans }}<span class="fa arrow"></span>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel panel-default" style="margin-top: -15px;">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="{{ url('opinions') }}">
+                                <i class="fa fa-users"></i> {{ 'leave_opinion'|trans }}<span class="fa arrow"></span>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+    </nav>
+    </div>
+
+

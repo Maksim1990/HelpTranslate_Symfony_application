@@ -1,0 +1,181 @@
+translate.link1: Home
+translate.link2: About
+translate.link3: Contact
+register_title: Register
+welcome: Welcome
+welcome_to: Welcome to
+logout: Log out
+thai_lnag: Thai
+english_lnag: English
+french_lnag: French
+students: Students
+teachers: Teachers
+become_teacher: Become a teacher
+become_student: Become a student
+my_profile: My profile
+settings: Settings
+view_profile: view profile
+edit_profile: edit profile
+start_type_for_searching: Start typing for faster searching
+choose_result_language: Choose result language
+choose_language: Choose language
+translate: Translate
+messages: Messages
+title: Title
+description: Description
+language: Language
+priority: Priority
+due_date: Due date
+created_at: Created at
+last_modified: Last modified
+my_teaching_works: My teaching works
+my_studying_works: My studying works
+personal_data: Personal data
+registered: Registered
+country: Country
+city: City
+phone: Phone
+birthday: Birthday
+profile_of: Profile of
+dashboard: Dashboard
+testimonials: Testimonials
+testimonial: Testimonial
+rating: Rating
+teaching: Teaching
+learning: Learning
+user: User
+date: Date
+as: as
+sender_user_type: Sender user type
+rating_date: Rating date
+language_level: Language level
+cant_vote_your_profile: You can't vote on your profile!
+have_already_voted: You have already voted!
+rate: Rate
+thank_you: Thank you!
+login: Login
+want_to_translate_text: Want to  translate some text?
+want_to_learn_language: Want to learn new language?
+developed_by: Developed by
+name_or_email: Name or email
+password: Password
+repeat_password: Repeat password
+remember_me: Remember me
+dont_have_account: Don't have account yet?
+have_account_already: Do you have already account?
+register: Register
+we_are_trusted_by:  We are trusted by
+languages_that_are_used: Languages that are used
+daily_usage: Daily usage
+other_features: Other important features
+languages: Languages
+dash_info_1: Discover all list of teaches that already registered on website. Feel free to contact them, ask any advices or discuss you translation or rule
+             in the language that you are learning now.
+dash_info_2: Check out all available languages on website. Find teacher, student or some specific word depending on preferable language.
+             List of language is constantly growing. Find out your native language or be the first one who register it!
+dash_info_3: Start learning any language from already available languages on website. Easy become student, choose and
+             assign teacher depending on experience level and skills.
+dash_info_4: Create new work on specific language and assign it to any teacher. Check any time teacher's feedback and keep learning
+             and improving your language skills.
+works: Works
+all_works: All works
+users_testimonials: Testimonials of our users
+learn_new_languages: Learn new languages with us!
+be_connected: Be connected with a whole world!
+welcome_to_helptranslate: Welcome to HELP TRANSLATE app!
+pending: Pending
+completed: Completed
+declined: Declined
+create_new: Create new
+draft: Draft
+accepted: Accepted
+instant_translator: Instant Online Translator
+teach_and_study: TEACH & STUDY
+all_students: All students
+all_teachers: All teachers
+all_languages: All languages
+available_languages: AVAILABLE LANGUAGES
+about: About
+leave_opinion: Leave opinion
+find: Find
+no_ratings: No ratings yet!
+close: Close
+all_voted_users: All users who rated you
+contacts: Contacts
+profile_settings: Profile settings
+theme_settings: Theme settings
+background_color: Background color
+sidebar_color: Sidebar color
+footer_color: Footer color
+header_color: Header color
+security_settings: Security settings
+hide_email: Hide Email on profile page
+showing_emails_is: Showing email function is
+activated: activated
+success: success
+deactivated: deactivated
+error: error
+header_color_changed: Header color is changed!
+footer_color_changed: Footer color is changed!
+background_color_changed: Background color is changed!
+sidebar_color_changed: Sidebar color is changed!
+about_application: ABOUT
+app_that_created_for: is created with intention to link people around the world
+here_you_can: Here you can improve skills in any languages that you are learning or languages that you are just planning to learn
+you_can_find_friends: You can find new friends and new connections around the world. Here  you can be student simultaneously in different languages but at the same time you can try yourself as a teacher in languages that you are expert at
+you_are_welcome_to_send: You are welcome to send your advices about how would you improve this app and what you don't like
+please_click: Please click
+link_and_find: link and find all available ways for communication
+developed_by: Developed
+in_2017: in 2017
+maksim_narushevich: Maksim Narushevich
+account: account
+mobile: Mobile
+my_works: My works
+other_works: Other works
+leave_opinion: Leave opinion
+edit_opinion: Edit opinion
+opinion: Opinion
+actions: Actions
+edit: Edit
+delete: Delete
+menu: Menu
+hide: Hide
+create: Create
+task: task
+job_marked_as_accepted: Job was marked as ACCEPTED!
+job_marked_as_declined: Job was marked as DECLINED!
+author: Author
+status: Status
+teacher: Teacher
+undefined: Undefined
+no_works_created: No works have been created
+back_to_works: Back to my
+available: Available
+assign: Assign
+assigned: Assigned
+not_assigned: Not asigned
+successfully_assigned: Successfully
+want_to_assign_teacher: Do you really want to unassign this teacher?
+my_teaching: My teaching
+all_works_from_other_users: All works from other users
+create_new_work: Create new work
+watch_teacher_profile: Watch teacher's profile
+accept: Accept
+leave_your_comment: Leave your comment
+accept_work: Accept work
+decline_work: Decline work
+decline: Decline
+my: My
+assign_teacher_for_work: Assign teacher for work
+sorry_no_teachers: Sorry! No teachers have been registered yet
+please_try_later: Please try later
+successfully_assigned_to_work: successfully assigned for this
+successfully_unassigned: Successfully unassigned
+user_opinion: User's opinion
+messages_list: Messages list
+create_new_chat: Create new chat
+chat_with: Chat with
+send: Send
+register_as_student: Register as student
+register_as_teacher: Register as teacher

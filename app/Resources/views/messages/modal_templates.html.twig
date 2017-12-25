@@ -1,0 +1,42 @@
+{#Modal template for finding user#}
+<div id="findUserForMessage" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <input class="form-control" type="text" name="findUser" id="findUser" placeholder="Start type user name ...">
+            </div>
+            <div class="modal-body">
+                <div id="userFindResult"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{#Modal template for new message#}
+<div id="newMessageModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                New message to <span id="new_message_to" onclick="hideMessageModal()" data-toggle="modal"  data-target="#findUserForMessage" style="font-weight: bold;"></span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="user_id_message_to_send">
+                <input type="hidden" id="user_name_message_to_send">
+                <textarea name="message_body_to_send" id="message_body_to_send" style="width:100%;" rows="6"></textarea>
+                <button type="button" class="btn btn-success btn-sm" id="send_new_modal_message" data-dismiss="modal" >Send</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+translate.link1: Bienvenue
+translate.link2: A propos
+translate.link3: Contacter
+register_title: Registrer
+welcome: Bienvenue
+welcome_to: Bienvenue à
+logout: Se déconnecter
+thai_lnag: Thaï
+english_lnag: Anglais
+french_lnag: Français
+students: Les étudiants
+teachers: Les professeurs
+become_teacher: Devenir professeur
+become_student: Devenir étudiant
+my_profile: Mon profile
+settings: Paramètres
+view_profile: voir le profile
+edit_profile: modifier le profile
+start_type_for_searching: Commencez à taper pour accélérer la recherche
+choose_result_language: Choisissez la langue des résultats
+choose_language: Choisissez la langue
+translate: Traduire
+messages: Messages
+title: Titre
+description: La description
+language: La langue
+priority: Priorité
+due_date: Date d'échéance
+created_at: Créé à
+last_modified: Dernière modification à
+my_teaching_works: Mes articles d'enseignement
+my_studying_works: Mes articles d'étude
+personal_data: les données personnelles
+registered: S'inscrit
+country: Pays
+city: La ville
+phone: Numéro de téléphone
+birthday: Le jour de naissance
+profile_of: Profil de
+dashboard: Dashboard
+testimonials: Les témoignages
+testimonial: Le témoignage
+rating: L'évaluation
+teaching: Enseignement
+learning: Apprentissage
+user: L'utilisateur
+date: La date
+as: comme
+sender_user_type: Type d'utilisateur qui a envoyé un témoignage
+rating_date: Date d'évaluation
+language_level: Niveau de langue
+cant_vote_your_profile: Vous ne pouvez pas voter sur votre profil!
+have_already_voted: Vous avez déjà voté!
+rate: Évaluer
+thank_you: Merci beaucoup!
+login: Se connecter
+want_to_translate_text: Voulez-vous traduire du texte?
+want_to_learn_language: Voulez-vous apprendre une nouvelle langue?
+developed_by: Développé par
+name_or_email: Nom ou email
+password: Mot de passe
+repeat_password: Répéter le mot de passe
+remember_me: Souvenir moi
+dont_have_account: Vous n'avez pas encore de compte?
+have_account_already: Avez-vous déjà un compte?
+register: Enregistrer
+we_are_trusted_by:  Nous avons reçu la confiance de
+languages_that_are_used: Langues utilisées
+daily_usage: Utilisation quotidienne
+other_features: Autres caractéristiques importantes
+languages: Langues
+dash_info_1: Découvrez toute la liste des enseignants déjà inscrits sur le site. Ne hésitez pas à les contacter, demander des conseils ou discuter de votre traduction ou règle dans la langue que vous apprenez maintenant.
+dash_info_2: Consultez toutes les langues disponibles sur le site Web. Trouver un enseignant, un étudiant ou un mot spécifique en fonction de la langue préférée. Liste de langue est en croissance constante. Trouvez votre langue maternelle ou soyez le premier à l'enregistrer!
+dash_info_3: Commencez à apprendre n'importe quelle langue à partir de langues déjà disponibles sur le site Web. Facile devenir étudiant, choisissez et affecter l'enseignant en fonction du niveau d'expérience et des compétences.
+dash_info_4: Créez un nouveau travail sur une langue spécifique et attribuez-le à n'importe quel enseignant. Vérifiez les commentaires des enseignants à tout moment et continuez à apprendre et améliorer vos compétences linguistiques.
+works: Les travaux
+all_works: Toutes les travaux
+users_testimonials: Témoignages de nos utilisateurs
+learn_new_languages: Apprenez de nouvelles langues avec nous!
+be_connected: Soyez connecté avec un monde entier!
+welcome_to_helptranslate: Bienvenue à HELP TRANSLATE app!
+pending: En attendant
+completed: Completed
+declined: Terminé
+create_new: Créer un nouveau
+draft: Brouillon
+accepted: Accepté
+instant_translator: Traducteur instantané en ligne
+teach_and_study: ETENSEIGNEMENT & ÉTUDE
+all_students: Tous les étudiants
+all_teachers: Tous les enseignants
+all_languages: Toutes les langues
+available_languages: LANGUES DISPONIBLES
+about: À propos
+leave_opinion: Laissez une opinion
+find: Trouver
+no_ratings: Aucune évaluation pour le moment!
+close: Fermer
+all_voted_users: Tous les utilisateurs qui vous ont noté
+contacts: Contacts
+profile_settings: Paramètres de profil
+theme_settings: Réglage des thèmes
+background_color: Background color
+sidebar_color: Couleur de fond
+footer_color: Couleur de pied de page
+header_color: Couleur de l'en-tête
+security_settings: Les paramètres de sécurité
+hide_email: Masquer les détails de l'email sur la page du profil
+showing_emails_is: La fonction d'affichage de la messagerie est
+activated: activé
+success: succès
+deactivated: désactivé
+error: erreur
+header_color_changed: La couleur de l'en-tête est modifiée!
+footer_color_changed: La couleur du pied de page est modifiée!
+background_color_changed: La couleur de fond est changée!
+sidebar_color_changed: La couleur de la barre latérale est modifiée!
+about_application: À PROPOS
+app_that_created_for: est créé avec l'intention de relier les gens autour du monde
+here_you_can: Vous pouvez ici améliorer vos compétences dans toutes les langues que vous apprenez ou dans les langues que vous souhaitez apprendre
+you_can_find_friends: Vous pouvez trouver de nouveaux amis et de nouvelles connexions dans le monde entier. Ici, vous pouvez être simultanément étudiant dans différentes langues mais en même temps, vous pouvez vous essayer en tant que professeur dans des langues que vous êtes expert
+you_are_welcome_to_send: Vous êtes invités à envoyer vos conseils sur la façon dont vous améliorer cette application et ce que vous n'aimez pas
+please_click: Cliquez s'il vous plait
+link_and_find: relier et trouver tous les moyens de communication disponibles
+developed_by: Développé
+in_2017: en 2017
+maksim_narushevich: Maksim Narushevich
+account: compte
+mobile: Mobile
+my_works: Mes travaux
+other_works: Autres travaux
+leave_opinion: Laissez une opinion
+edit_opinion: Modifier l'opinion
+opinion: Opinion
+actions: Les actes
+edit: Modifier
+delete: Effacer
+menu: Menu
+hide: Cacher
+create: Créer
+task: tâche
+job_marked_as_accepted: Le travail a été marqué comme ACCEPTÉ!
+job_marked_as_declined: Le travail a été marqué comme DÉCLINÉ!
+author: Auteur
+status: Statut
+teacher: Le professeur
+undefined: Indéfini
+no_works_created: Aucune oeuvre n'a été créée
+back_to_works: Retour à mon
+available: Disponible
+assign: Attribur
+assigned: Attribué
+not_assigned: Non affecté
+successfully_assigned: Avec succès
+want_to_assign_teacher: Voulez-vous vraiment désaffecter ce professeur?
+my_teaching: Mon enseignement
+all_works_from_other_users: Toutes les œuvres d'autres utilisateurs
+create_new_work: Créer un nouveau travail
+watch_teacher_profile: Regarder le profil de l'enseignant
+accept: Acceptez
+leave_your_comment: Laissez votre commentaire
+accept_work: Acceptez le travail
+decline_work: Refusez le travail
+decline: Décliner
+my: Mon
+assign_teacher_for_work: Affecter un enseignant pour le travail
+sorry_no_teachers: Pardon! Aucun enseignant n'a encore été enregistré
+please_try_later: Essayez plus tard
+successfully_assigned_to_work: attribué avec succès pour cette
+successfully_unassigned: Annulée avec succès
+user_opinion: L'opinion de l'utilisateur
+messages_list: Liste des messages
+create_new_chat: Créer une nouvelle conversation
+chat_with: Conversation avec
+send: Envoyer
+register_as_student: Inscrivez-vous comme étudiant
+register_as_teacher: S'inscrire en tant qu'enseignant
+

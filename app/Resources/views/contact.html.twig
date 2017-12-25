@@ -1,0 +1,41 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+    About
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .body_about{
+
+            color: black;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 400;
+            text-align: center;
+            padding-top: 50px;
+
+
+        }
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <div class="body_about">
+        <h1 style="font-size: 45px;" class="header_text">{{ 'contacts'|trans|upper }}</h1><br><br>
+        <p style="font-size: 25px;"><strong>Email : </strong> narushevich.maksim@gmail.com</p>
+        <p style="font-size: 25px;"><strong>{{ 'mobile'|trans }} : </strong> +375(33) 627-20-17</p>
+        <p style="font-size: 25px;"><strong>Help Translate App {{ 'account'|trans }}: </strong> <a href="{{ url('profile', {'id':1}) }}">Maksim Narushevich</a></p>
+        <p style="font-size: 25px;"><strong>LinkedIn {{ 'account'|trans }} : </strong> <a href="https://www.linkedin.com/in/maksim-narushevich-b99783106">Maksim Narushevich</a></p>
+        <p style="font-size: 25px;"><strong>LINE Messenger ID: </strong>maksimklim</p>
+        <p style="font-size: 25px;"><strong>Skype ID: </strong>maksimn901</p>
+        <p style="font-size: 25px;"><strong>VK {{ 'account'|trans }}: </strong> <a href="https://vk.com/maksim_naruschevich">Maksim Narushevich</a></p>
+        <p style="font-size: 25px;"><strong>Facebook {{ 'account'|trans }}: </strong> <a href="https://www.facebook.com/Maksim1990">Maksim Narushevich</a></p>
+        <p style="font-size: 25px;"><strong>GitHub {{ 'account'|trans }}: </strong> <a href="https://github.com/Maksim1990">Maksim1990</a></p>
+    </div>
+{% endblock %}

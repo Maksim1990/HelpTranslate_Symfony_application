@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/animate.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Anton|Roboto:100,100i,300i" rel="stylesheet">
+    <style>
+        html, body
+        {
+            height: 100%;
+        }
+        .background{
+            min-height: 100%;
+            background-image: url("{{ asset('images/layout/helpTranslate33.jpeg') }}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position:40% 70%;
+        }
+        h2{
+            font-family: 'Anton', sans-serif;
+            font-style: italic;
+            font-size: 50px;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+        .rightBlock, .leftBlock{
+            height: 350px;
+        }
+        #languages{
+            text-align: right;
+        }
+        #about{
+            text-align: left;
+        }
+        #languages{
+            padding-top: 8px;
+
+        }
+        #languages a{
+            font-family: 'Roboto', sans-serif;
+            color:grey;
+            font-size: 22px;
+            margin-left: 12px;
+        }
+        #about{
+            font-family: 'Roboto', sans-serif;
+            color:grey;
+            font-size: 15px;
+            padding-top: 12px;
+        }
+        .column{
+            height: 90px;
+            font-weight: bold;
+            padding-top: 10px;
+            color:white;
+            font-size: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .num{
+            font-size: 35px;
+            font-weight: bold;
+        }
+        #info_block{
+            background-color:rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            margin-bottom: 50px;
+            -webkit-animation-delay: 1.5s;
+            -moz-animation-delay: 1.5s;
+            animation-delay: 1.5s;
+        }
+        .rightText{
+            -webkit-animation-delay: .5s;
+            -moz-animation-delay: .5s;
+            animation-delay: .5s;
+        }
+
+        .delay_1{
+            -webkit-animation-delay: 1.5s;
+            -moz-animation-delay: 1.5s;
+            animation-delay: 1.5s;
+        }
+        .delay_2{
+            -webkit-animation-delay: 2s;
+            -moz-animation-delay: 2s;
+            animation-delay: 2s;
+        }
+        .delay_3{
+            -webkit-animation-delay: 2.5s;
+            -moz-animation-delay: 2.5s;
+            animation-delay: 2.5s;
+        }
+
+        .divider {
+            display: inline-block;
+            width: 0;
+            position: absolute;
+            top:20%;
+            height: 10em;
+            border-left: 2px solid white;
+        }
+        .button a{
+            background-color:white;
+            display: inline-block;
+
+            border:1px solid white;
+            padding: 20px 20px;
+            border-radius: 50px;
+            color:grey;
+            width: 300px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .button a:hover{
+            background-color:rgba(255, 255, 255, 0.7);
+            color: grey;
+            border-color: lightgrey;
+            text-decoration: none;
+        }
+        .bottom{
+            height:50px;
+            position: absolute;
+            bottom: 0%;
+            width: 110%;
+        }
+        @media(max-width:767px){
+            #info_block{
+                display: none;
+            }
+            h2{
+                font-size: 40px;
+            }
+            .rightBlock, .leftBlock{
+                height: 230px;
+            }
+            #languages, #about{
+                text-align:center;
+            }
+            .button a{
+                width: 70%;
+            }
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="background">
+<div class="row">
+    <div class="col-sm-6 col-xs-12 w3-display-container leftBlock">
+            <div class="w3-display-middle w3-center"><h2 class="animated leftText w3-text-white">{{ 'want_to_learn_language'|trans }}</h2></div>
+    </div>
+    <span class="divider"></span>
+    <div class="col-sm-6 col-xs-12 w3-display-container rightBlock">
+        <div class="w3-display-middle w3-center"><h2 class="animated rightText w3-text-white">{{ 'want_to_translate_text'|trans }}</h2></div>
+    </div>
+    <div class="col-sm-10 col-sm-offset-1 col-xs-12 w3-center animated" id="info_block">
+        <div class="col-sm-4 col-xs-4 column animated delay_1" >
+           {{ 'we_are_trusted_by'|trans }}: <br> <span class="num">1000+</span>
+        </div>
+        <div class="col-sm-4 col-xs-4 column animated delay_2" >
+            {{ 'languages_that_are_used'|trans }}: <br><span class="num">100+</span>
+        </div>
+        <div class="col-sm-4 col-xs-4 column animated delay_3" >
+            {{ 'daily_usage'|trans }}: <br> <span class="num">500+</span>
+        </div>
+    </div>
+    <div class="col-sm-12 col-xs-12 w3-center button" >
+   <a href="{{ url('login') }}" >{{ 'login'|trans }}</a>
+    </div>
+    <div class="col-sm-12 col-xs-12 bottom w3-white w3-center">
+        <div class="col-sm-4 col-xs-12" id="about">
+            {{ 'developed_by'|trans }} {{ 'maksim_narushevich'|trans }}
+        </div>
+        <div class=" col-sm-6 col-xs-12" id="languages">
+            <a href="{{ url('welcome', {'_locale': 'en'}) }}" >{{ 'english_lnag'|trans }}</a>
+            <a href="{{ url('welcome', {'_locale': 'fr'}) }}" >{{ 'french_lnag'|trans }}</a>
+            <a href="{{ url('welcome', {'_locale': 'th'}) }}" >{{ 'thai_lnag'|trans }}</a>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('.leftText').addClass('bounceInLeft');
+        $('.rightText').addClass('bounceInRight');
+        $('.column').addClass('zoomIn');
+        $('#info_block').addClass('fadeIn');
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'basis.html.twig' %}
+{% block title %}
+   About
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .body_about{
+
+            color: black;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 400;
+            text-align: center;
+            padding-top: 50px;
+
+
+        }
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <div class="body_about ">
+        <h1 style="font-size: 45px;" class="header_text">{{ 'about_application'|trans }}</h1>
+        <p style="font-size: 25px;">
+            <strong>HELP TRANSLATE APP</strong> {{ 'app_that_created_for'|trans }}.
+        </p>
+        <p style="font-size: 25px;">
+            {{ 'here_you_can'|trans }}.
+        </p>
+        <p style="font-size: 25px;">
+        {{ 'you_can_find_friends'|trans }}.
+         </p>
+        <br><br>
+        <h1 style="font-size: 50px;" class="header_text">HELP TRANSLATE APP</h1>
+        <img src="{{ asset('images/layout/logo.png')}}" alt="" style="width: 300px;border:none;">
+        <br><br> <p style="font-size: 25px;">
+            {{ 'you_are_welcome_to_send'|trans }}.<br>
+            {{ 'please_click'|trans }} <a href="{{ url('contact') }}">{{ 'contacts'|trans }}</a> {{ 'link_and_find'|trans }}.
+        </p>
+        <p style="font-size: 25px;">
+            {{ 'developed_by'|trans }} <a href="{{ url('profile', {'id':1}) }}">{{ 'maksim_narushevich'|trans }}</a> {{ 'in_2017'|trans }}
+        </p>
+    </div>
+{% endblock %}

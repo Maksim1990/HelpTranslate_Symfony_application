@@ -1,0 +1,417 @@
+{% extends 'main.html.twig' %}
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="{{ asset('css/jquery.bxslider.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/animate.css')}}">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Anton&amp;subset=latin-ext,vietnamese" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .dash_column{
+            color: black;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            text-align: center;
+            line-height: 2em;
+        }
+    </style>
+    <style media="screen">
+        .bx-wrapper .bx-prev {
+            left: 10px;
+            background: url({{ asset('images/layout/controls.png')}}) no-repeat 0 -32px;
+        }
+
+        .bx-wrapper .bx-next {
+            right: 10px;
+            background: url({{ asset('images/layout/controls.png')}}) no-repeat -43px -32px;
+        }
+
+
+         #thumbnail img {width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        #dash_head{
+            background-color:rgba(255, 255, 255, 0.2);
+            padding-top: 30px;
+            padding-bottom: 30px;
+            border-radius: 20px;
+        }
+        #dash_main h1{
+            color: white;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .tlt2{
+            font-size: 50px;
+            font-family: 'Rokkitt';
+        }
+
+
+        #dash_block_detail img{
+            width: 100%;
+            height: 250px;
+        }
+        #dash_block_detail h1, #dash_slider h1{
+            margin-bottom: 90px;
+            font-size: 50px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+        #dash_block_detail {
+          padding-top: 50px;
+          padding-bottom: 100px;
+
+        }
+        .box_hidden{
+            visibility: hidden;;
+        }
+        .fadeInUp, .fadeOutDown{
+            visibility: visible;
+        }
+        .delay_05s{
+            -webkit-animation-delay: .5s;
+            -moz-animation-delay: .5s;
+            animation-delay: .5s;
+        }
+        .delay_1s{
+            -webkit-animation-delay: 1s;
+            -moz-animation-delay: 1s;
+            animation-delay: 1s;
+        }
+        #dash_block_detail_main{
+            background-image: url("{{ asset('images/layout/bg.png')}}");
+            background-size:cover;
+            background-position: center;
+        }
+        #dash_info_main{
+            background-image: url("{{ asset('images/layout/bg2.png')}}");
+            background-size:cover;
+            background-position: center;
+        }
+#dash_advertise{
+    height: 500px;
+            background-image: url("{{ asset('images/layout/dash.jpeg')}}");
+            background-size:cover;
+    background-position: center;
+    opacity: 0.7;
+    padding-top: 50px;
+
+}
+
+        .img {
+            border-radius: 20px;
+        }
+        .img:hover {
+            /*background-color: #F8F1F1;*/
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        #dash_slider{
+
+            background-color: black;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+        #dash_slider h1{
+            color: white;
+        }
+        .bx-wrapper{
+            border-radius: 20px;
+        }
+        .bx-wrapper img {
+            display: inline;
+        }
+        .opinionBadge{
+            background-color: darkslategray;
+        }
+        .opinion_text{
+          padding-top: 60px;
+            font-size: 25px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+        .img{
+     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+    <script src="{{ asset('js/jquery.bxslider.js') }}"></script>
+
+{% endblock %}
+{% block main %}
+    {% block sidebar %}{% endblock %}
+    <div id="dash_main">
+            <div class="w3-center" style="padding: 30px 30px;margin-bottom: 50px;">
+            <h1 class="tlt2">{{ 'welcome_to_helptranslate'|trans }}</h1>
+            </div>
+            <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 w3-center" id="dash_head">
+            <div class="col-sm-6 col-xs-12 w3-center">
+               <p> <a href="{{ url('create_teacher') }}" ><img width="200" src="{{ asset('images/edu.png') }}" data-toggle="tooltip" data-placement="right" title="{{ 'become_teacher'|trans }}"></a></p>
+            </div>
+            <div class="col-sm-6 col-xs-12 w3-center">
+                <p> <a href="{{ url('create_student') }}" ><img width="200" src="{{ asset('images/learn.png') }}" data-toggle="tooltip" data-placement="right" title="{{ 'become_student'|trans }}"></a></p>
+            </div>
+            </div>
+    </div>
+    <div class="col-sm-12 col-xs-12" id="dash_info_main">
+    <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 w3-center" id="dash_info">
+        <div class="col-sm-6  col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 dash_column" data-teachers="true">
+                <div class="col-lg-3  col-sm-12  col-xs-12">
+                    <img src="{{ asset('images/layout/1_block.png')}}" class="w3-circle w3-margin-right" style="margin-bottom: 15px;">
+                </div>
+                <div class="col-lg-9 col-sm-12  col-xs-12 w3-center">
+                    <div style="height:1px; background-color: black;width: 80%;margin: auto;margin-top:15px;"></div>
+                    <h3>{{ 'teachers'|trans }}</h3>
+                    <span class="textInfo">{{ teachersCount }}</span>
+                </div>
+                <div class="col-sm-12  hidden-xs w3-center">
+                    {{ 'dash_info_1'|trans }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6  col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 dash_column" data-languages="true">
+                <div class="col-lg-3  col-sm-12 col-xs-12">
+                    <img src="{{ asset('images/layout/2_block.png')}}" class="w3-circle w3-margin-right" style="margin-bottom: 15px;">
+                </div>
+                <div class="col-lg-9 col-sm-12  col-xs-12 w3-center">
+                    <div style="height:1px; background-color: black;width: 80%;margin: auto;margin-top:15px;"></div>
+                    <h3>{{ 'languages'|trans }}</h3>
+                    <span class="textInfo">{{ languages }}</span>
+                </div>
+                <div class="col-sm-12  hidden-xs w3-center">
+                    {{ 'dash_info_2'|trans }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6  col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 dash_column" data-students="true">
+                <div class="col-lg-3  col-sm-12  col-xs-12">
+                    <img src="{{ asset('images/layout/3_block.png')}}" class="w3-circle w3-margin-right" style="margin-bottom: 15px;">
+                </div>
+                <div class="col-lg-9 col-sm-12  col-xs-12 w3-center">
+                    <div style="height:1px; background-color: black;width: 80%;margin: auto;margin-top:15px;"></div>
+                    <h3>{{ 'students'|trans }}</h3>
+                    <span class="textInfo">{{ studentsCount }}</span>
+                </div>
+                <div class="col-sm-12  hidden-xs w3-center">
+                    {{ 'dash_info_3'|trans }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6  col-xs-12">
+            <div class="col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 dash_column" data-works="true">
+                <div class="col-lg-3  col-sm-12  col-xs-12">
+                    <img src="{{ asset('images/layout/4_block.png')}}" class="w3-circle w3-margin-right" style="margin-bottom: 15px;">
+                </div>
+                <div class="col-lg-9 col-sm-12  col-xs-12 w3-center">
+                    <div style="height:1px; background-color: black;width: 80%;margin: auto;margin-top:15px;"></div>
+                    <h3>{{ 'works'|trans }}</h3>
+                    <span class="textInfo">{{ todosCount }}</span>
+                </div>
+                <div class="col-sm-12  hidden-xs w3-center">
+                    {{ 'dash_info_4'|trans }}
+
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+    <div class="col-sm-12  hidden-xs w3-center" id="dash_slider">
+    <div class="col-sm-10 col-sm-offset-1 hidden-xs w3-center" >
+
+        <h1>{{ 'users_testimonials'|trans }}</h1>
+        <div  class="w3-center">
+            <ul class="bxslider">
+                {% for opinion in opinions %}
+                    <li>
+                        <div class="col-sm-3">
+                            {% if opinion.user.image is not empty %}
+                                {% set profile_image_path = '/images/uploads/'~opinion.user.image.ImageName %}
+                                {#{% set profile_image_path = '/helptranslate/images/uploads/'~opinion.user.image.ImageName %}#}
+                            {% else %}
+                                {% set profile_image_path = '/images/layout/profile.png' %}
+                                {#{% set profile_image_path = '/helptranslate/images/layout/profile.png' %}#}
+                            {% endif %}
+                            <a href="{{ url('profile', {'id':opinion.user.id}) }}" data-toggle="tooltip" data-placement="right" title="{{ opinion.user.username }}">
+                                <img src="{{ asset(profile_image_path)}}" >
+                            </a>
+                        </div>
+                        <div class="col-sm-9 opinion_text">
+                            {{ opinion.opinionText|raw }}
+                        </div>
+                    </li>
+                {% endfor %}
+
+
+            </ul>
+        </div>
+
+        <div id="thumbnail" class="w3-center">
+            {% set count=0 %}
+            {% set countBadge=1 %}
+            {% for opinion in opinions %}
+            <a data-slide-index="{{ count }}" href="#"><span class="w3-badge opinionBadge">{{ countBadge }}</span></a>
+                {% set count=count+1 %}
+                {% set countBadge=countBadge+1 %}
+            {% endfor %}
+        </div>
+
+    </div>
+    </div>
+    <div class="col-sm-12 hidden-xs " id="dash_block_detail_main" >
+    <div class="col-sm-10 col-sm-offset-1 hidden-xs w3-center" id="dash_block_detail" >
+        <h1>{{ 'other_features'|trans }}</h1>
+        <div class="row">
+            <div class="col-sm-4 dash_block_detail">
+                <a href="{{ url('translate', {'id':app.user.id}) }}">
+                <img class="box_hidden animated img" src="{{ asset('images/layout/translator.jpg') }}" alt="" data-toggle="tooltip" data-placement="bottom" title="Try online translator now">
+                </a>
+            </div>
+
+            <div class="col-sm-4 dash_block_detail">
+                <a href="{{ url('messages_list', {'id':app.user.id}) }}">
+                <img class="box_hidden delay_05s animated img" src="{{ asset('images/layout/message.jpg') }}" alt="" data-toggle="tooltip" data-placement="bottom" title="Try to send your first message">
+                </a>
+            </div>
+
+            <div class="col-sm-4 dash_block_detail" >
+                <a href="{{ url('languages')}}">
+                <img class="box_hidden delay_1s animated img" src="{{ asset('images/layout/languages.png') }}" alt="" data-toggle="tooltip" data-placement="bottom" title="Check all available languages">
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    <div class="col-sm-12 col-xs-12 w3-center" id="dash_advertise">
+            <h1 class="box_hidden animated">{{ 'learn_new_languages'|trans }}</h1><br>
+            <h2>{{ 'be_connected'|trans }}</h2>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+
+
+    <script>
+        $(function () {
+
+            $('.tlt2').textillate({
+                //-- For activating loop animation
+//                loop: true,
+                loop: false,
+                in: { effect: 'fadeInUp',delay: 50 ,
+                    callback: function () {
+
+                      //  alert('Finished');
+                    } },
+                out: {
+                    effect: 'rotateOutDownRight',
+                    delayScale: 1.5,
+                    delay: 10,
+                    sync: false,
+                    shuffle: false,
+                    reverse: false,
+                    callback: function () {
+
+                      //  alert('Finished 2');
+                    }
+                }, });
+            $('.tlt3').textillate();
+        })
+    </script>
+
+
+    <script type="text/javascript">
+
+            $('.bxslider').bxSlider({
+                // mode: 'fade',
+                mode: 'horizontal',
+                captions: true,
+                pagerCustom:'#thumbnail'
+            });
+
+    </script>
+<script>
+    $('.dash_column').click(function () {
+        var teachers=$(this).attr('data-teachers');
+        var languages=$(this).attr('data-languages');
+        var works=$(this).attr('data-works');
+        var students=$(this).attr('data-students');
+        if(teachers=='true'){
+            window.location.href='/{{ app.request.locale }}/teachers/all';
+        }else if(works=='true'){
+            window.location.href='/{{ app.request.locale }}/list';
+        }else if(languages=='true'){
+            window.location.href='/{{ app.request.locale }}/languages';
+        }else if(students=='true'){
+            window.location.href='/{{ app.request.locale }}/students/all';
+        }
+    });
+</script>
+    <script src="{{ asset('js/jquery.fittext.js') }}"></script>
+    <script src="{{ asset('js/jquery.lettering.js') }}"></script>
+    <script src="{{ asset('js/jquery.textillate.js') }}"></script>
+    <script src="{{ asset('js/jquery.waypoints.js') }}"></script>
+    <script type="text/javascript">
+
+        $('.img ')
+            .waypoint(function(dir) {
+                    if(dir === 'down'){
+                        $('.img ').removeClass('fadeOutDown').addClass(' fadeInUp');
+                    }else{
+                        $('.img').removeClass('fadeInUp').addClass(' fadeOutDown');
+                    }
+
+                },{
+                    offset: "70%"
+                }
+            );
+        $('.img').waypoint(function(dir) {
+                if(dir === 'down'){
+                    $('.img')
+                        .removeClass('fadeInUp')
+                        .addClass(' fadeOutDown');
+                }else{
+                    $('.img')
+                        .removeClass('fadeOutDown')
+                        .addClass('fadeInUp ');
+                }
+            },{
+                offset: -50
+            }
+        );
+
+        $('#dash_advertise h1')
+            .waypoint(function(dir) {
+                    if(dir === 'down'){
+                        $('#dash_advertise h1').removeClass('fadeOutDown').addClass(' fadeInUp');
+                    }else{
+                        $('#dash_advertise h1').removeClass('fadeInUp').addClass(' fadeOutDown');
+                    }
+
+                },{
+                    offset: "70%"
+                }
+            );
+        $('#dash_advertise h1').waypoint(function(dir) {
+                if(dir === 'down'){
+                    $('#dash_advertise h1')
+                        .removeClass('fadeInUp')
+                        .addClass(' fadeOutDown');
+                }else{
+                    $('#dash_advertise h1')
+                        .removeClass('fadeOutDown')
+                        .addClass('fadeInUp ');
+                }
+            },{
+                offset: -50
+            }
+        );
+    </script>
+{% endblock %}

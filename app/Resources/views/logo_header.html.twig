@@ -1,0 +1,17 @@
+<!-- Top container -->
+{% set  header_color= app.session.get('header_color') %}
+        {% if not header_color %}
+            {% set header_color = '' %}
+        {% endif %}
+<div class="w3-bar w3-top w3-large " id="header_main" style="z-index:4;background-color:{{ header_color }};">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a href="{{ url('logout') }}" class="w3-bar-item w3-right"><i class="fa fa-sign-out" aria-hidden="true" data-toggle="tooltip" data-placement="left" title="{{ 'logout'|trans }}"></i></a>
+    {% endif %}
+    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-text-white w3-hover-text-light-grey" id="button_menu_show" onclick="w3_open();"><i class="fa fa-bars"></i>  {{ 'menu'|trans }}</button>
+    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-text-white w3-hover-text-light-grey" style="display: none;" id="button_menu_hide" onclick="w3_close();"><i class="fa fa-bars"></i>  {{ 'hide'|trans }}</button>
+    <span class="w3-bar-item w3-left"><a href="{{ url('homepage') }}" ><img src="{{ asset('images/layout/logo.png')}}" alt="" style="width: 100px;border:none;"></a></span>
+    <span class="w3-bar-item w3-right"> <a href="{{ url('homepage', {'_locale': 'th'}) }}" data-toggle="tooltip" data-placement="left" title="{{ 'thai_lnag'|trans }}"><img src="{{ asset('images/th.png') }}" ></a>
+   <a href="{{ url('homepage', {'_locale': 'fr'}) }}" ><img src="{{ asset('images/fr.png') }}" data-toggle="tooltip" data-placement="left" title="{{ 'english_lnag'|trans }}"></a>
+    <a href="{{ url('homepage', {'_locale': 'en'}) }}" ><img src="{{ asset('images/en.png') }}" data-toggle="tooltip" data-placement="left" title="{{ 'french_lnag'|trans }}"></a></span>
+
+</div>

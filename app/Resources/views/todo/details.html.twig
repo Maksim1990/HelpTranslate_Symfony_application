@@ -1,0 +1,181 @@
+{% extends 'basis.html.twig' %}
+
+{% block basis %}
+   <div class="col-sm-6 col-xs-12">
+       <h1>{{ todo.title }} {{ 'task'|trans }}</h1>
+   </div>
+     <div class="col-sm-4 col-xs-6">
+    {% if list %}
+        <h1> </h1>
+         {% if status|lower == 'pending' %}
+    <a href="#" class="btn btn-sm btn-success" id="btn_accept_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#acceptModal">Accept</a>
+    <a href="#" class="btn btn-sm btn-danger"  id="btn_decline_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#declineModal">Decline</a>
+         {%  elseif status|lower == 'accepted' %}
+             <a href="#" class="btn btn-sm btn-success" style="display: none;" id="btn_accept_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#acceptModal">Accept</a>
+             <a href="#" class="btn btn-sm btn-danger"   id="btn_decline_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#declineModal">Decline</a>
+         {%  elseif status|lower == 'declined' %}
+             <a href="#" class="btn btn-sm btn-success"  id="btn_accept_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#acceptModal">Accept</a>
+             <a href="#" class="btn btn-sm btn-danger" style="display: none;"  id="btn_decline_{{ todo.id }}" onclick="setWorkId('{{ todo.id }}')" data-toggle="modal" data-target="#declineModal">Decline</a>
+         {%  endif %}
+    {% endif %}
+     </div>
+    <div class="col-sm-2 col-xs-6">
+        <h1> </h1>
+
+
+        {% if status|lower == 'pending' %}
+            {% set class_status = 'w3-text-orange' %}
+        {%  elseif status|lower == 'accepted' %}
+            {% set class_status = 'w3-text-green' %}
+        {%  elseif status|lower == 'declined' %}
+            {% set class_status = 'w3-text-red' %}
+            {% else %}
+            {% set class_status = 'w3-text-red' %}
+        {%  endif %}
+
+       <p class="{{ class_status }}" style="font-size: 23px;" id="status_{{ todo.id }}">{{ status }}</p>
+     </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ 'Description'|trans }}</th>
+            <th>{{ 'priority'|trans }}</th>
+            <th>{{ 'due_date'|trans }}</th>
+            <th>{{ 'created_at'|trans }}</th>
+            <th>{{ 'actions'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ todo.description|raw }}</td>
+                <td>{{ todo.priority }}</td>
+                <td>{{ todo.dueDate | date('Y-m-d H:i:s') }}</td>
+                <td>{{ todo.createDate | date('Y-m-d H:i:s') }}</td>
+                <td>
+                    <a href="{{ url('todo_edit', {'id':todo.id}) }}" class="btn btn-success">{{ 'edit'|trans }}</a>
+                    <a href="{{ url('todo_delete', {'id':todo.id}) }}" class="btn btn-danger">{{ 'delete'|trans }}</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {% include('todo/modal.html.twig') %}
+    <input type="hidden" id="setWorkId">
+    <input type="hidden" id="pendingUpdate" value="">
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+
+        //Set workId for accept/decline
+        function setWorkId(id)
+        {
+            $('#setWorkId').val(id);
+        }
+
+        //Accept work
+        $('#accept_work').click(function() {
+            var work_id =$('#setWorkId').val();
+            var teacher_description =$('#teacher_accept_description').val();
+            $.ajax({
+                url:'{{ (path('accept_work_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "work_id": work_id,
+                    "teacher_description": teacher_description,
+                },
+                async: true,
+                success: function (data)
+                {
+                    if(data.output)
+                    {
+                        $('#teacher_accept_description').val('');
+                        $('#btn_accept_'+work_id).hide();
+                        $('#btn_decline_'+work_id).show();
+                        $('#status_'+work_id).html('<a  href="/{{ app.request.locale }}/list_teaching/accepted"><span class="w3-text-green">{{ 'completed'|trans }}</span></a>');
+                        new Noty({
+                            type: 'success',
+                            layout: 'topRight',
+                            text:'{{ 'job_marked_as_accepted'|trans }}'
+                        }).show();
+
+                        var pendingUpdate=$('#pendingUpdate').val();
+                        alert(pendingUpdate);
+                        var arrayItemCheck = pendingUpdate.split(",");
+                        var strCheckResult = arrayItemCheck.indexOf(work_id);
+                        if(+strCheckResult< 0){
+                            $('#pendingUpdate').val('');
+                            $('#pendingUpdate').val(pendingUpdate+ ',' + work_id);
+                            var current_pending_works=$('#current_pending_works').text();
+                            current_pending_works= +current_pending_works-1;
+                            $('#current_pending_works').text('');
+                            $('#current_pending_works').text(current_pending_works);
+
+                            if(current_pending_works==0)
+                            {
+                                $('#current_pending_works').hide();
+                            }
+                        }
+
+
+                    }
+                }
+            });
+        });
+
+
+        //Decline work
+        $('#decline_work').click(function() {
+            var work_id =$('#setWorkId').val();
+            var teacher_description =$('#teacher_decline_description').val();
+            $.ajax({
+                url:'{{ (path('decline_work_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "work_id": work_id,
+                    "teacher_description": teacher_description,
+                },
+                async: true,
+                success: function (data)
+                {
+                    if(data.output)
+                    {
+                        $('#teacher_decline_description').val('');
+                        $('#btn_decline_'+work_id).hide();
+                        $('#btn_accept_'+work_id).show();
+                        $('#status_'+work_id).html('<a  href="/{{ app.request.locale }}/list_teaching/declined"><span class="w3-text-red">{{ 'declined'|trans }}</span></a>');
+                        new Noty({
+                            type: 'error',
+                            layout: 'topRight',
+                            text:'{{ 'job_marked_as_declined'|trans }}'
+                        }).show();
+
+                        var pendingUpdate=$('#pendingUpdate').val();
+                        var arrayItemCheck = pendingUpdate.split(",");
+                        var strCheckResult = arrayItemCheck.indexOf(work_id);
+                        if(+strCheckResult< 0){
+                            $('#pendingUpdate').val('');
+                            $('#pendingUpdate').val(pendingUpdate+ ',' + work_id);
+                            var current_pending_works=$('#current_pending_works').text();
+                            current_pending_works= +current_pending_works-1;
+                            $('#current_pending_works').text('');
+                            $('#current_pending_works').text(current_pending_works);
+
+                            if(current_pending_works==0)
+                            {
+                                $('#current_pending_works').hide();
+                            }
+                        }
+
+                    }
+                }
+            });
+        });
+
+
+
+    </script>
+
+{% endblock %}

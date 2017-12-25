@@ -1,0 +1,346 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/dist/themes/bootstrap-stars.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+        h2, #rateModal h4{
+            font-size: 20px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+        .rating_line{
+            border-bottom: 1px solid darkgrey;
+        }
+        .rating_line:hover{
+            background-color: lightgrey;
+        }
+    </style>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="{{ asset('css/dist/jquery.barrating.js') }}"></script>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <h1 class="header_text">{{ 'profile_of'|trans }} {{ user.username|capitalize }}</h1>
+
+    <div class="row">
+        <div class="col-sm-6 col-xs-12 col-lg-4 w3-center">
+            <p>
+                <img width="200" style="border-radius: 50px;" src="{{ asset(image) }}" alt="">
+            </p>
+            <p>
+                {% if user.id == app.user.id %}
+                    <a href="{{ url('delete_profile_image', {'id':user.id}) }}" class="btn btn-success">Delete image</a>
+                {% endif %}
+            </p>
+        </div>
+        <div class=" col-xs-12 col-sm-6 col-lg-2 w3-center">
+            {% include('profile/vote_block.html.twig') %}
+
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-6 ">
+            <div class="col-sm-8 col-lg-8 ">
+                <h2>{{ 'personal_data'|trans }}</h2>
+                <table class="w3-table w3-bordered">
+                    <tr>
+                        <td>{{ 'registered'|trans }}:</td>
+                        <td>{{ user.createDate | date('Y-m-d H:i:s') }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'country'|trans }}:</td>
+                        <td>{{ profile.country }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'city'|trans }}:</td>
+                        <td>{{ profile.city }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'phone'|trans }}:</td>
+                        <td>{{ profile.phone }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'birthday'|trans }}:</td>
+                        <td>{{ profile.birthDate }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    {#//Tabs profile block#}
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            <div>
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#dashboard" aria-controls="dasboard" role="tab"
+                                                              data-toggle="tab">{{ 'dashboard'|trans }}</a></li>
+                    <li role="presentation"><a href="#teachers" aria-controls="teachers" role="tab"
+                                               data-toggle="tab">{{ user.username|capitalize }} {{ 'teaching'|trans }}</a>
+                    </li>
+                    <li role="presentation"><a href="#students" aria-controls="students" role="tab"
+                                               data-toggle="tab">{{ user.username|capitalize }} {{ 'learning'|trans }}</a>
+                    </li>
+                    <li role="presentation"><a href="#testimonial" aria-controls="testimonial" role="tab"
+                                               data-toggle="tab">{{ 'testimonials'|trans }}</a></li>
+                    <li role="presentation"><a href="#rating" aria-controls="rating" role="tab"
+                                               data-toggle="tab">{{ 'rating'|trans }}</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="dashboard">
+                        <table class="w3-table-all w3-card-4">
+                            <tr>
+                                <th>{{ 'title'|trans }}</th>
+                                <th>{{ 'title'|trans }}</th>
+                                <th>{{ 'language'|trans }}</th>
+                                <th>{{ 'priority'|trans }}</th>
+                                <th>{{ 'due_date'|trans }}</th>
+                                <th>{{ 'created_at'|trans }}</th>
+                                <th>{{ 'last_modified'|trans }}</th>
+                            </tr>
+                            {% for work in works %}
+                                <tr>
+                                    <td><a href="{{ url('todo_detail', {'id':work.id}) }}">{{ work.title }}</a></td>
+                                    <td>{{ work.description|slice(0, 800)|raw }}
+                                        <a class="work_description" href="{{ url('todo_detail', {'id':work.id}) }}">
+                                            <span style="margin-left:5px;font-size: 10px;">[See more]</span>
+                                        </a>
+                                    </td>
+                                    <td class="w3-center">
+                                        {% set path = 'images/flags/' %}
+                                        {% set ext = '.svg' %}
+                                        {% if work.languageType in arrayFlags %}
+                                            {% set fullPath = path~work.languageType~ext %}
+                                            {% set style = 'style="border-radius: 100px;"' %}
+                                        {% else %}
+                                            {% set fullPath = path~'flag.png' %}
+                                            {% set style = '' %}
+                                        {% endif %}
+                                        {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[work.languageType] %}
+                                        <img width="30" {{ style|raw }} src="{{ asset(fullPath) }}"
+                                             data-toggle="tooltip" data-placement="right" title="{{ language }}" alt="">
+                                    </td>
+                                    <td>{{ work.priority }}</td>
+                                    <td>{{ work.dueDate| date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ work.createDate| date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ work.updatedAt| date('Y-m-d H:i:s') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <div class="w3-center">
+                            <div class="navigation">
+                                {{ knp_pagination_render(works) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="teachers">
+                        <table class="w3-table-all w3-card-4">
+                            <tr>
+                                <th>{{ 'language'|trans }}</th>
+                                <th>{{ 'language_level'|trans }}</th>
+                            </tr>
+                            {% for teacher in teachers %}
+                                <tr>
+                                    {% set path = 'images/flags/' %}
+                                    {% set ext = '.svg' %}
+                                    {% if teacher.languageType in arrayFlags %}
+                                        {% set fullPath = path~teacher.languageType~ext %}
+                                        {% set style = 'style="border-radius: 100px;"' %}
+                                    {% else %}
+                                        {% set fullPath = path~'flag.png' %}
+                                        {% set style = '' %}
+                                    {% endif %}
+                                    {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[teacher.languageType] %}
+                                    <td>
+                                        <img width="30" {{ style|raw }} src="{{ asset(fullPath) }}"
+                                             data-toggle="tooltip" data-placement="right" title="{{ language }}" alt="">
+                                    </td>
+                                    <td>{{ teacher.languageLevel }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="students">
+                        <table class="w3-table-all w3-card-4">
+                            <tr>
+                                <th>{{ 'language'|trans }}</th>
+                                <th>{{ 'language_level'|trans }}</th>
+                            </tr>
+                            {% for student in students %}
+                                <tr>
+                                    {% set path = 'images/flags/' %}
+                                    {% set ext = '.svg' %}
+                                    {% if student.languageType in arrayFlags %}
+                                        {% set fullPath = path~student.languageType~ext %}
+                                        {% set style = 'style="border-radius: 100px;"' %}
+                                    {% else %}
+                                        {% set fullPath = path~'flag.png' %}
+                                        {% set style = '' %}
+                                    {% endif %}
+                                    {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[student.languageType] %}
+                                    <td>
+                                        <img width="30" {{ style|raw }} src="{{ asset(fullPath) }}"
+                                             data-toggle="tooltip" data-placement="right" title="{{ language }}" alt="">
+                                    </td>
+                                    <td>{{ student.languageLevel }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="testimonial" style="padding-top: 20px;">
+                        {% include('profile/testimonials.html.twig') %}
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="rating">
+                        {% include('profile/rating.html.twig') %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('css/dist/examples.js') }}"></script>
+        <script>
+        {% for flash_message in app.session.flashbag.get('notice') %}
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            text: '{{ flash_message }}'
+        }).show();
+        {% endfor %}
+    </script>
+    <script>
+
+        //Show add testimonial block
+        $('#add_testimonial').click(function () {
+            $(this).hide();
+            $('#testimonial_block').css('display', 'block');
+        });
+
+
+        //Hide testimonial block
+        $('#cancel_testimonial').click(function () {
+            $('#testimonial_block').css('display', 'none');
+            $('#add_testimonial').show();
+        });
+
+        $('#rate_user_now').click(function () {
+            $(this).hide();
+            $('#rating_main').css('display', 'block');
+            //Here i can get value from DB and set it to <select>
+//               $('#ratingSelect').barrating('set', 5);
+
+        });
+        $('#ratingSelect').barrating('show', {
+            theme: 'bootstrap-stars',
+            onSelect: function (value, text) {
+                var current_rating = $('#circle').html();
+                $('#circle').html(+current_rating + +value);
+                $.ajax({
+                    url: '{{ (path('rating_ajax')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "rating": value,
+                        "user_profile_id": {{ user.id }}
+                    },
+                    async: true,
+                    success: function (data) {
+                        if (data.output) {
+
+                            $('#ratingSelect').barrating('destroy');
+                            $('#rate_name').hide();
+                            $('#rate-block').html('{{ "thank_you"|trans }}');
+                            new Noty({
+                                type: 'success',
+                                layout: 'topRight',
+                                text: 'Successfully rated as ' + data.output
+                            }).show();
+
+                            var today = new Date();
+                            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                            var dateTime = date + ' ' + time;
+                            var newRowContent = "<tr><td><a href='{{ url('profile', {'id':app.user.id}) }}'>{{ app.user.username }}</a></td><td>" + data.output + "</td><td>" + dateTime + "</td></tr>";
+                            //$(newRowContent).appendTo("#testimonial_table");
+                            $("#rating_table tr:first").after(newRowContent);
+                        }
+
+
+                    }
+                });
+                $('#ratingSelect').toggleClass('invisible');
+            }
+        });
+
+        //Show add testimonial block
+        $('#send_testimonial').click(function () {
+            var user_profile_id ={{ user.id }};
+            var user_type = $('#selectUserType').val();
+            var user_profile_type = $('#selectUserProfileType').val();
+            var language_type = $('#selectUserLanguage').val();
+            var description = $('#testimonial_text').val();
+//            alert(user_id);
+//            alert(user_type);
+//            alert(user_sender_type);
+//            alert(language_type);
+//            alert(description);
+
+            $.ajax({
+                url: '{{ (path('testimonial_ajax')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "description": description,
+                    "user_type": user_type,
+                    "user_profile_type": user_profile_type,
+                    "user_profile_id": user_profile_id,
+                    "language_type": language_type
+                },
+                async: true,
+                success: function (data) {
+                    //alert(data.output);
+
+                    new Noty({
+                        type: 'success',
+                        layout: 'topRight',
+                        text: 'Testimonial is successfully added!'
+                    }).show();
+                    $('#testimonial_block').css('display', 'none');
+                    $('#add_testimonial').show();
+                    $('#testimonial_text').val('');
+                    $('#selectUserType').val('');
+                    $('#selectUserProfileType').val('');
+                    $('#selectUserLanguage').val('');
+                    var today = new Date();
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = date + ' ' + time;
+                    var newRowContent = "<tr><td>" + data.output + "</td><td>" + user_profile_type + "</td><td><a href='{{ url('profile', {'id':app.user.id}) }}'>{{ app.user.username }}</a></td><td>" + user_type + "</td><td>" + language_type + "</td><td>" + dateTime + "</td></tr>";
+                    //$(newRowContent).appendTo("#testimonial_table");
+                    $("#testimonial_table tr:first").after(newRowContent);
+                }
+            });
+        });
+
+
+    </script>
+
+{% endblock %}

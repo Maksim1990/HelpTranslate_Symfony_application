@@ -1,0 +1,96 @@
+{% extends 'basis.html.twig' %}
+{% block stylesheets %}
+
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <style>
+        .header_text {
+            font-size: 40px;
+            margin-bottom: 40px;
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+            margin-left: 20px;
+        }
+
+    </style>
+{% endblock %}
+{% block basis %}
+    {% block sidebar %}{% endblock %}
+    <h1 class="header_text">{{ 'languages'|trans }}</h1>
+
+    <div class="w3-container">
+        <table class="w3-table-all w3-hoverable">
+            <thead>
+            <tr class="w3-light-grey " >
+                <th >{{ 'languages'|trans }}</th>
+                <th class="w3-center">{{ 'teachers'|trans }}</th>
+                <th class="w3-center">{{ 'students'|trans }}</th>
+                <th class="w3-center">{{ 'my_works'|trans }}</th>
+                <th class="w3-center">{{ 'other_works'|trans }}</th>
+            </tr>
+            </thead>
+            {% for lang in languages %}
+                <tr>
+                    <td>
+                        {% set path = 'images/flags/' %}
+                        {% set ext = '.svg' %}
+                        {% if lang in arrayFlags %}
+                            {% set fullPath = path~lang~ext %}
+                            {% set style = 'style="border-radius: 100px;"' %}
+                        {% else %}
+                            {% set fullPath = path~'flag.png' %}
+                            {% set style = '' %}
+                        {% endif %}
+                        {% set language = constant('AppBundle\\Entity\\Constant::LANG_ARRAY')[lang] %}
+                        <img width="30" {{ style|raw }}  src="{{ asset(fullPath) }}" data-toggle="tooltip" data-placement="right" title="{{  language}}" alt="">
+                        <span style="margin-left: 20px;">{{  language}}</span>
+                    </td>
+                    {% set teachersCount = 0 %}
+                    {% for teach in teachers %}
+                        {% if  teach.lang == lang %}
+                        {% set teachersCount = teachersCount + 1  %}
+                        {%  endif %}
+                    {% endfor %}
+                                {% if  teachersCount != 0 %}
+                                    {% set langLink = lang  %}
+                                {%  else %}
+                                    {% set langLink = 'all'  %}
+                                {%  endif %}
+                    <td class="w3-center"><a href="{{ url('teachers', {'lang':langLink}) }}">{{ teachersCount }}</a></td>
+                    {% set studentsCount = 0 %}
+                    {% for stud in students %}
+                        {% if  stud.lang == lang %}
+                            {% set studentsCount = studentsCount + 1  %}
+                        {%  endif %}
+                    {% endfor %}
+                                {% if  studentsCount != 0 %}
+                                    {% set langLink = lang  %}
+                                {%  else %}
+                                    {% set langLink = 'all'  %}
+                                {%  endif %}
+                    <td class="w3-center"><a href="{{ url('students', {'lang':langLink}) }}">{{ studentsCount }}</a></td>
+
+                    {% set myWorkCount = 0 %}
+                    {% for work in myWorks %}
+                        {% if  work.lang == lang %}
+                            {% set myWorkCount = myWorkCount + 1  %}
+                        {%  endif %}
+                    {% endfor %}
+
+                    <td class="w3-center"><a href="{{ url('my_studying_list') }}">{{ myWorkCount }}</a></td>
+
+                    {% set otherWorkCount = 0 %}
+                    {% for work in otherWorks %}
+                        {% if  work.lang == lang %}
+                            {% set otherWorkCount = otherWorkCount + 1  %}
+                        {%  endif %}
+                    {% endfor %}
+                    <td class="w3-center"><a href="{{ url('list') }}">{{ otherWorkCount }}</a></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+{% endblock %}
