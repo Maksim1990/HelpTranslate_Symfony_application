@@ -1,72 +1,58 @@
-Symfony Standard Edition
-========================
+# HELP TRANSLATE APP
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+## Check this project online: http://www.discoveringworld.net/helptranslate/en/welcome
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+###### Detailed description of this project: http://web.discoveringworld.net/projects/help-translate-app/
 
-What's inside?
---------------
+###### Check out also my other applications and works: http://web.discoveringworld.net/
 
-The Symfony Standard Edition is configured with the following defaults:
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+)   **ATTENTION!** *For testing purposes try to use following credentials. These are testing login & password details that provide access to test account and all main application functionalities:*
 
-  * An AppBundle you can use to start coding;
+> **LOGIN: test@test.com (or you can use just ‘test’)** <br />
+> **PASSWORD: test**
 
-  * Twig as the only configured template engine;
 
-  * Doctrine ORM/DBAL;
+**HELP TRANSLATE App** is an application that unites all people that are learning or plan to learn new foreign languages and need some help with translations.
 
-  * Swiftmailer;
+Every user can be registered as teacher or student for specific language. Application allows to create new translation works, edit or delete it and assign it to some available teacher.
 
-  * Annotations enabled for everything.
+Core of current application is based on Symfony 3 framework. 
 
-It comes pre-configured with the following bundles:
+In order to reduce database loading it was implemented Redis that allows to decrease SQL requests for rarely changing application data.
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+By means of using Symfony Multi-Language functionality it is possible to use app for different languages. Currently supported languages are English, French & Thai.
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate2-1080x675.png)
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+## Techniques that were used for creation of this application: ##
+-  PHP 7.1
+-  MySQL
+-  Symfony 3
+-  HTML5
+-  CSS3/ W3 CSS
+-  Redis
+-  JavaScript
+-  Ajax
+-  JQuery / JQuery Barrating
+-  Noty (JS library)
+-  WebSockets
+-  Google Translate and other APIs
+-  Photoshop
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate3.png)
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate4.png)
 
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate7.png)
 
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate14.png)
 
-  * [**SensioGeneratorBundle**][13] (in dev env) - Adds code generation
-    capabilities
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate5.png)
 
-  * [**WebServerBundle**][14] (in dev env) - Adds commands for running applications
-    using the PHP built-in web server
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate10.png)
 
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
+![Mockup for feature A](http://web.discoveringworld.net/wp-content/uploads/2017/12/translate9.png)
 
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.3/setup.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.3/doctrine.html
-[8]:  https://symfony.com/doc/3.3/templating.html
-[9]:  https://symfony.com/doc/3.3/security.html
-[10]: https://symfony.com/doc/3.3/email.html
-[11]: https://symfony.com/doc/3.3/logging.html
-[13]: https://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
-[14]: https://symfony.com/doc/current/setup/built_in_web_server.html
+## Check this project online: http://web.discoveringworld.net/projects/help-translate-app/
