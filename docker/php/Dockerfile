@@ -8,6 +8,7 @@ RUN apt-get install -y \
             libzip-dev \
             expect \
             nano \
+            vim \
             zip \
             && docker-php-ext-configure zip --with-libzip \
             && printf "\n" | pecl install redis \
