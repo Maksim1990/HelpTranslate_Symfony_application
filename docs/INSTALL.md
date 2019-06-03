@@ -19,7 +19,7 @@
         docker exec -it helptranslate_php php bin/console doctrine:mig:mig
   
       
-* *Change permission for 'storage' folder:*
+* *Change permission for 'var' folder:*
     
         docker exec -it helptranslate_php  chmod +x ./services/docker/set_var_read_write_permissions.sh
         docker exec -it helptranslate_php  ./services/docker/set_var_read_write_permissions.sh
