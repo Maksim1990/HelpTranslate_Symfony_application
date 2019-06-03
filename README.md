@@ -6,6 +6,9 @@
 
 ###### Check out also my other applications and works: http://web.discoveringworld.net
 
+### INSTALLATION INSTRUCTIONS
+[HOW TO INSTALL](https://github.com/Maksim1990/HelpTranslate_Symfony_application/blob/master/docs/INSTALL.md)
+
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+)   **ATTENTION!** *For testing purposes try to use following credentials. These are testing login & password details that provide access to test account and all main application functionalities:*
 
 > **LOGIN: test@test.com (or you can use just ‘test’)** <br />
