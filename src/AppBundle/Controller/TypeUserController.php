@@ -23,7 +23,7 @@ class TypeUserController extends Controller
      */
     public function teacherAction($lang)
     {
-        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../web/images/flags");
+        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../images/flags");
         while($entryName = readdir($myDirectory)) {
             $extension = substr($entryName, -3);
             if ($extension == 'svg') {
@@ -70,7 +70,7 @@ class TypeUserController extends Controller
      */
     public function studentAction($lang)
     {
-        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../web/images/flags");
+        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../images/flags");
         while($entryName = readdir($myDirectory)) {
             $extension = substr($entryName, -3);
             if ($extension == 'svg') {

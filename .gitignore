@@ -16,3 +16,6 @@
 /vendor/
 /web/bundles/
 .idea/
+/logs
+/data
+.env

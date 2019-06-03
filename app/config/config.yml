@@ -71,14 +71,14 @@ swiftmailer:
     spool: { type: memory }
 
 eko_google_translate:
-    api_key: 'AIzaSyAbUAm3OB_YnZik231XByBQ-JNbynBFIds'
+    api_key: 'AIzaSyBhetQbXGIWYipzNaEpxaj-Ju5WLMqL4Sc'
 vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr
 
     mappings:
             user_image:
                 uri_prefix:         /images/uploads
-                upload_destination: '%kernel.root_dir%/../web/images/uploads'
+                upload_destination: '%kernel.root_dir%/../images/uploads'
 
                 inject_on_load:     false
                 delete_on_update:   true
@@ -108,7 +108,7 @@ snc_redis:
         default:
             type: predis
             alias: default
-            dsn: redis://redis-18126.c9.us-east-1-2.ec2.cloud.redislabs.com:18126
+            dsn: redis://redis
             logging: %kernel.debug%
         cache:
             type: predis

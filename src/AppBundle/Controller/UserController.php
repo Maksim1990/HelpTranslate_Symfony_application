@@ -74,8 +74,7 @@ class UserController extends Controller
                 $alreadyVote='true';
             }
 
-        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../web/images/flags");
-//            $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../images/flags");
+        $myDirectory = opendir($this->get('kernel')->getRootDir() ."/../images/flags");
         while($entryName = readdir($myDirectory)) {
             $extension = substr($entryName, -3);
             if ($extension == 'svg') {

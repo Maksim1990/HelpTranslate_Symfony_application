@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,6 @@ class LoginController extends Controller
      */
     public function welcomeAction()
     {
-
-//        $translator = $this->get('eko.google_translate.translator');
-//        $value = $translator->translate('Hi, this is my text to detect!', 'th', 'en');
-//print_r(  $value);
         return $this->render('homepage.html.twig');
     }
 
