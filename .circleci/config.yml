@@ -63,7 +63,7 @@ jobs:
             ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose up -d --no-deps --force-recreate"
       - run:
           name: Install Composer dependencies
-          command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php composer install"
+          command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php composer install"
       - run:
           name: Set up Symfony environment
           command: |
