@@ -1,0 +1,44 @@
+version: '3.5'
+services:
+    php:
+        image: maksim1990/laravel_inspirecms:latest
+        container_name: inspirecms_php
+        user: "${UID}"
+        volumes:
+            - ./deploy:/var/www/deploy
+            - ./storage/app:/var/www/storage/app
+            - data-volume:/var/www
+            - ./data/composer:/.composer
+            - ./logs/laravel:/var/www/var/logs:cached
+            - hosts-volume:/etc/nginx/conf.d
+        depends_on:
+            - mysql
+            - redis
+    nginx:
+        image: nginx:latest
+        ports:
+            - "${APP_HTTP_PORT}:80"
+            - "${APP_HTTPS_PORT}:443"
+        volumes:
+            - ./storage/app:/var/www/storage/app
+            - hosts-volume:/etc/nginx/conf.d
+            - data-volume:/var/www
+            - ./logs/nginx/:/var/log/nginx:cached
+        depends_on:
+            - php
+    redis:
+        image: redis:latest
+        ports:
+          - "${APP_REDIS_PORT}:6379"
+    mysql:
+        image: mysql:5.7.21
+        environment:
+            MYSQL_ROOT_PASSWORD: ${APP_MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${APP_MYSQL_DATABASE}
+        ports:
+            - "${APP_MYSQL_PORT}:3306"
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+volumes:
+  data-volume:
+  hosts-volume:

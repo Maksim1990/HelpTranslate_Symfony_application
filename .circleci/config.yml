@@ -1,0 +1,102 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.3-stretch-node-browsers
+        environment:
+          DOCKER_IMAGE_NAME: maksim1990/symfony_helptranslate
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install Docker client
+          command: |
+            set -x
+            VER="18.06.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+            sudo tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            sudo mv /tmp/docker/* /usr/bin
+      - run:
+          name: Build custom Docker image
+          command: |
+            TAG=latest
+            docker build -t   $DOCKER_IMAGE_NAME:$TAG -f ./docker/php/Dockerfile .
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push $DOCKER_IMAGE_NAME:$TAG
+  deploy:
+    machine:
+      enabled: true
+    working_directory: ~/helptranslate
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "0c:33:a8:8c:40:06:fa:ae:13:c8:63:a6:e7:52:a1:b0"
+      - checkout
+      - run:
+          name: Perform ports mapping
+          command: |
+            sed -e "s/\${APP_HTTP_PORT}/${DEV_HTTP_PORT}/g; s/\${APP_HTTPS_PORT}/${DEV_HTTPS_PORT}/g;
+             s/\${APP_REDIS_PORT}/${DEV_REDIS_PORT}/g;
+             s/\${APP_MYSQL_PORT}/${DEV_MYSQL_PORT}/g;
+             s/\${APP_MYSQL_PASSWORD}/${DEV_MYSQL_PASSWORD}/g;
+             s/\${APP_MYSQL_DATABASE}/${DEV_MYSQL_DATABASE}/g;"  ./deploy/docker-compose.dev.tpl.yml > ./docker-compose.yml
+            sed -e "s/\${APP_MYSQL_PASSWORD}/${DEV_MYSQL_PASSWORD}/g;
+             s/\${APP_MYSQL_DATABASE}/${DEV_MYSQL_DATABASE}/g;"  ./deploy/.env.dist.deploy > ./deploy/.env.dist
+      - run:
+          name: Copy docker folder & compose file to the server
+          command: |
+            scp -r ./docker-compose.yml $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
+            scp -r ./docker $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
+            scp -r ./deploy $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
+      - run:
+          name: Login into Docker Hub account
+          command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker login -u $DOCKER_USER -p $DOCKER_PASS"
+      - run:
+          name: Recreate docker containers
+          command: |
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose pull"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose down"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker volume rm inspirecms_data-volume"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose up -d --no-deps --force-recreate"
+      - run:
+          name: Install Composer dependencies
+          command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php composer install"
+      - run:
+          name: Set up Laravel environment
+          command: |
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php cp ./deploy/.env.dist ./.env"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php php artisan key:generate"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php php artisan cache:clear"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php php artisan migrate"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php php artisan storage:link"
+      - run:
+          name: Install Node JS dependencies
+          command: |
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php npm install"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php npm run dev"
+      - run:
+          name: Change storage folder permissions
+          command: |
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php chmod +x ./services/docker/set_storage_read_write_permissions.sh"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php ./services/docker/set_storage_read_write_permissions.sh"
+      - run:
+          name: Clean not used docker files
+          command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker image prune -a -f"
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy:
+          #requires:
+          #- build
+          filters:
+            branches:
+              only:
+                - master
