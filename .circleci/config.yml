@@ -66,7 +66,7 @@ jobs:
           name: Set up Symfony environment
           command: |
             ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php cp ./deploy/.env.dist ./.env"
-            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php ./deploy/mapping_symfony_db_credentials.sh"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php ./deploy/mapping_symfony_db_credentials.sh $DEPLOY_WITH_SHARED_MYSQL"
 #            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php php bin/console doctrine:mig:mig"
       - run:
           name: Change var folder permissions
