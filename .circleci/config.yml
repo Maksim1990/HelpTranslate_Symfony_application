@@ -27,6 +27,9 @@ jobs:
   deploy:
     machine:
       enabled: true
+    environment:
+      # If 'yes' than use shared MYSQL service
+      DEPLOY_WITH_SHARED_MYSQL: yes
     working_directory: ~/helptranslate
     steps:
       - add_ssh_keys:
@@ -36,14 +39,7 @@ jobs:
       - run:
           name: Perform ports mapping
           command: |
-            sed -e "s/\${APP_HTTP_PORT}/${DEV_HTTP_PORT}/g;
-             s/\${APP_HTTPS_PORT}/${DEV_HTTPS_PORT}/g;
-             s/\${APP_REDIS_PORT}/${DEV_REDIS_PORT}/g;
-             s/\${APP_MYSQL_PORT}/${DEV_MYSQL_PORT}/g;
-             s/\${APP_MYSQL_PASSWORD}/${DEV_MYSQL_PASSWORD}/g;
-             s/\${APP_MYSQL_DATABASE}/${DEV_MYSQL_DATABASE}/g;"  ./deploy/docker-compose.dev.tpl.yml > ./docker-compose.yml
-            sed -e "s/\${APP_MYSQL_PASSWORD}/${DEV_MYSQL_PASSWORD}/g;
-             s/\${APP_MYSQL_DATABASE}/${DEV_MYSQL_DATABASE}/g;"  ./deploy/.env.dist.deploy > ./deploy/.env.dist
+            ./deploy/mapping_environment_credentials_and_ports.sh $DEPLOY_WITH_SHARED_MYSQL
       - run:
           name: Copy docker folder & compose file to the server
           command: |
