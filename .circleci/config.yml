@@ -72,8 +72,8 @@ jobs:
       - run:
           name: Change var folder permissions
           command: |
-            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php chmod +x ./services/docker/set_var_read_write_permissions.sh"
-            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec inspirecms_php ./services/docker/set_var_read_write_permissions.sh"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php chmod +x ./services/docker/set_var_read_write_permissions.sh"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker exec helptranslate_php ./services/docker/set_var_read_write_permissions.sh"
       - run:
           name: Clean not used docker files
           command: ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker image prune -a -f"
