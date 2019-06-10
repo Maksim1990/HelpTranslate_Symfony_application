@@ -39,6 +39,7 @@ jobs:
       - run:
           name: Perform ports mapping
           command: |
+            chmod +x ./deploy/mapping_environment_credentials_and_ports.sh
             ./deploy/mapping_environment_credentials_and_ports.sh $DEPLOY_WITH_SHARED_MYSQL
       - run:
           name: Copy docker folder & compose file to the server
