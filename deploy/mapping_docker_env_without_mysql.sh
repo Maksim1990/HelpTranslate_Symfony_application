@@ -2,6 +2,6 @@
 
 sed -e "s/\${APP_HTTP_PORT}/${DEV_HTTP_PORT}/g;
              s/\${APP_HTTPS_PORT}/${DEV_HTTPS_PORT}/g;
-             s/\${APP_REDIS_PORT}/${DEV_REDIS_PORT}/g;"  ./deploy/docker-compose.dev.tpl.yml > ./docker-compose.yml
+             s/\${APP_REDIS_PORT}/${DEV_REDIS_PORT}/g;"  ./deploy/docker-compose_with_mysql_as_shared_service.dev.tpl.yml > ./docker-compose.yml
 sed -e "s/\${APP_MYSQL_PASSWORD}/${DEV_SHARED_MYSQL_PASSWORD}/g;
  s/\${APP_MYSQL_DATABASE}/${DEV_MYSQL_DATABASE}/g;"  ./deploy/.env.dist.deploy > ./deploy/.env.dist

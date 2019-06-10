@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo $1
+
 if [ $1 == "yes" ]; then
     echo "Start App environment WITH Shared Mysql service";
     ./deploy/mapping_docker_env_without_mysql.sh
