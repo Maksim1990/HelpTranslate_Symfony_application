@@ -57,7 +57,7 @@ jobs:
           command: |
             ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose pull"
             ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose down"
-            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && ./bash/add_volume_if_not_exists.sh helptranslate_data-volume"
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && cd ./bash && chmod +x ./add_volume_if_not_exists.sh && ./add_volume_if_not_exists.sh helptranslate_data-volume"
             ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && docker-compose up -d --no-deps --force-recreate"
       - run:
           name: Install Composer dependencies
