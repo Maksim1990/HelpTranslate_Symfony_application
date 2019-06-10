@@ -47,6 +47,7 @@ jobs:
             scp -r ./docker-compose.yml $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
             scp -r ./docker $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
             scp -r ./deploy $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR
+            ssh $SSH_USER_VPS@$SSH_HOST_VPS "cd $PROJECT_DIR && mkdir -p bash"
             scp ./services/docker/add_volume_if_not_exists.sh $SSH_USER_VPS@$SSH_HOST_VPS:$PROJECT_DIR/bash
       - run:
           name: Login into Docker Hub account
