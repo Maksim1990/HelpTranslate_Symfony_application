@@ -20,3 +20,4 @@
 /data
 .env
 /images/*
+/app.config/parameters.yml
