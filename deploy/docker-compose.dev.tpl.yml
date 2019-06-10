@@ -1,15 +1,15 @@
 version: '3.5'
 services:
     php:
-        image: maksim1990/laravel_inspirecms:latest
-        container_name: inspirecms_php
+        image: maksim1990/symfony_helptranslate:latest
+        container_name: helptranslate_php
         user: "${UID}"
         volumes:
             - ./deploy:/var/www/deploy
-            - ./storage/app:/var/www/storage/app
+            - ./images:/var/www/images
             - data-volume:/var/www
             - ./data/composer:/.composer
-            - ./logs/laravel:/var/www/var/logs:cached
+            - ./logs/symfony:/var/www/var/logs:cached
             - hosts-volume:/etc/nginx/conf.d
         depends_on:
             - mysql
@@ -20,7 +20,7 @@ services:
             - "${APP_HTTP_PORT}:80"
             - "${APP_HTTPS_PORT}:443"
         volumes:
-            - ./storage/app:/var/www/storage/app
+            - ./images:/var/www/images
             - hosts-volume:/etc/nginx/conf.d
             - data-volume:/var/www
             - ./logs/nginx/:/var/log/nginx:cached
