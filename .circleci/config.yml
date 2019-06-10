@@ -29,7 +29,7 @@ jobs:
       enabled: true
     environment:
       # If 'yes' than use shared MYSQL service
-      DEPLOY_WITH_SHARED_MYSQL: yes
+      DEPLOY_WITH_SHARED_MYSQL: "yes"
     working_directory: ~/helptranslate
     steps:
       - add_ssh_keys:
